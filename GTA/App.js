@@ -8,7 +8,6 @@ import Geolocation from '@react-native-community/geolocation';
 
 export default function App() {
   const { position, setPosition } = useAppContext(); // 전역 변수
-
   useEffect(() => {
     const fetchLocation = async () => {
       let permissionResponse;
@@ -35,7 +34,7 @@ export default function App() {
           updateLocation();
 
           // 일정한 간격으로 위치 업데이트
-          const updateInterval = setInterval(updateLocation, 5000); // 60초마다 업데이트
+          const updateInterval = setInterval(updateLocation, 60000); // 60초마다 업데이트
           
           // 언마운트 시에 clearInterval로 업데이트를 중단합니다.
           return () => clearInterval(updateInterval);
