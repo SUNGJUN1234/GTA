@@ -1,11 +1,22 @@
 package com.gta;
 
+import android.os.Bundle; // 추가
+
 import com.facebook.react.ReactActivity;
+
+import org.devio.rn.splashscreen.SplashScreen; // 추가
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 
 public class MainActivity extends ReactActivity {
+
+  // 추가
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    SplashScreen.show(this);
+    super.onCreate(savedInstanceState);
+  }
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule
