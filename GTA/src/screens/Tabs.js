@@ -1,10 +1,12 @@
-import * as React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useAppContext } from '../global/AppContext';
+import axios from 'axios'
 
 // 컴포넌트 import
-import Login from './Login'; 
+import LoginHub from './LoginHub'; 
 import Home from './Home'; 
 import Map from './Map';
 import Profile from './Profile';
@@ -13,10 +15,19 @@ import Profile from './Profile';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { theme } from '../global/colors';
+import { awsServer } from '../server';
 
-function LoginScreen() {
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+function LoginScreen({ navigation, route }) {
+  useEffect(()=>{
+    navigation.setOptions({tabBarStyle : {display:'none'}})
+  },[])
   return (
-    <Login></Login>
+    <Stack.Navigator initialRouteName='LoginHub'>
+      <Stack.Screen name="LoginHub" component={LoginHub} options={{headerShown:false}}/>
+    </Stack.Navigator>
   )
 }
 
@@ -38,54 +49,82 @@ function ProfileScreen() {
   );
 }
 
-const Tab = createBottomTabNavigator();
+
 
 export default function App() {
-
+  const { position, setPosition , userInfo , setUserInfo } = useAppContext(); // 전역 변수
+  const [loading , setLoading] = useState(true);
   const nowLocation = "첨성대";
+
+
+  const loadUserInfo = async() => {
+    setLoading(false);
+  }
+  // 유저 정보 불러오기
+  useEffect(()=>{
+    loadUserInfo();  
+  },[]);
+
+  // if (loading) {
+  //   return;
+  // }
   
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-        headerTitle: () => (
-          <View>
-            <Text style={styles.titleText}>현재위치 : {nowLocation}</Text>
-          </View>
-        ),
-        headerRight: () => (
-          <TouchableOpacity
-          style={styles.stampBtn}
-          onPress={() => alert('스탬프 찍기!')}
-          >
-            <FontAwesome5 name='stamp' size={16} color='white' />
-            <Text style={styles.stampText}>스탬프 찍기</Text>
-          </TouchableOpacity>
-        ),
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
+    <Tab.Navigator
+      initialRouteName={userInfo === null ? 'LoginScreen': 'HomeScreen'}
+      screenOptions={({ route }) => ({
+      headerTitle: () => (
+        <View>
+          <Text style={styles.titleText}>현재위치 : {nowLocation}</Text>
+        </View>
+      ),
+      headerRight: () => {
+        if (route.name === 'ProfileScreen') {
+          return (
+            <TouchableOpacity
+              style={styles.stampBtn}
+              onPress={() => alert('로그아웃!')}
+            >
+              <Text style={styles.logoutText}>로그아웃</Text>
+            </TouchableOpacity>
+          );
+        } else {
+          return (
+            <TouchableOpacity
+              style={styles.stampBtn}
+              onPress={() => alert('스탬프 찍기!')}
+            >
+              <FontAwesome5 name='stamp' size={16} color='white' />
+              <Text style={styles.stampText}>스탬프 찍기</Text>
+            </TouchableOpacity>
+          );
+        }
+      },
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
 
-          if (route.name === 'Home') {
-            iconName = focused
-              ? 'home'
-              : 'home-outline';
-          } else if (route.name === 'Map') {
-            iconName = focused ? 'map' : 'map-outline';
-          } else if (route.name === 'Profile') {
-              iconName = focused ? 'person' : 'person-outline';
-          }
+        if (route.name === 'HomeScreen') {
+          iconName = focused
+            ? 'home'
+            : 'home-outline';
+        } else if (route.name === 'MapScreen') {
+          iconName = focused ? 'map' : 'map-outline';
+        } else if (route.name === 'ProfileScreen') {
+            iconName = focused ? 'person' : 'person-outline';
+        }
 
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: theme.color1,
-        tabBarInactiveTintColor: 'gray',
-      })}
-      >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Map" component={MapScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: theme.color1,
+      tabBarInactiveTintColor: 'gray',
+    })}
+    >
+      <Tab.Screen name="LoginScreen" component={LoginScreen}  options={{ tabBarButton: () => null ,headerShown:false }}></Tab.Screen>
+      <Tab.Screen name="HomeScreen" component={HomeScreen} />
+      <Tab.Screen name="MapScreen" component={MapScreen} />
+      <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
+    </Tab.Navigator>
+
   );
 }
 
@@ -105,6 +144,9 @@ const styles = StyleSheet.create({
   stampText: {
     color: 'white',
     marginLeft: 8,
+  },
+  logoutText : {
+    color: 'white',
   }
 
 });

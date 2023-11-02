@@ -4,7 +4,7 @@ import { useAppContext } from '../global/AppContext';
 import MapView, { Marker } from 'react-native-maps';
 
 const Map = () => {
-  const { position, setPosition } = useAppContext();
+  const { position, setPosition , userInfo , setUserInfo } = useAppContext(); // 전역 변수
 
   return (
     <View style={{ flex: 1 }}>

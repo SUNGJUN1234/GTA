@@ -15,8 +15,10 @@ export const AppContextProvider = ({ children }) => {
     lng : 0,
   });
 
+  const [ userInfo , setUserInfo] = useState(null);
+
   return (
-    <AppContext.Provider value={{ position, setPosition }}>
+    <AppContext.Provider value={{ position, setPosition , userInfo , setUserInfo}}>
       {children}
     </AppContext.Provider>
   );

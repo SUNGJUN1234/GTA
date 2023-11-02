@@ -23,8 +23,8 @@ const Profile = () => {
 
   const data = [
     {
-      name: "전체 관광지",
-      population: totalStamp,
+      name: "미방문 관광지",
+      population: totalStamp - myStamp,
       color: "orange",
       legendFontColor: "#000",
       legendFontSize: 15

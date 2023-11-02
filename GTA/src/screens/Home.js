@@ -46,6 +46,7 @@ const Home = () => {
     },
   ];
 
+
   useEffect(() => {
     if (bannerData.length > 0) {
       const timer = setInterval(() => {
