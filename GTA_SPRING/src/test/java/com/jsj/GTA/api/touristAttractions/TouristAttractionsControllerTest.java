@@ -1,3 +1,4 @@
+package com.jsj.GTA.api.touristAttractions;
 //package com.jsj.GTA.config.api.touristAttractions;
 //
 //import com.fasterxml.jackson.core.JsonProcessingException;
