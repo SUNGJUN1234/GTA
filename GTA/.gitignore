@@ -1,3 +1,6 @@
+#server
+/src/server.js
+
 # OSX
 #
 .DS_Store
@@ -66,5 +69,3 @@ yarn-error.log
 # testing
 /coverage
 
-#server
-/src/server.js
