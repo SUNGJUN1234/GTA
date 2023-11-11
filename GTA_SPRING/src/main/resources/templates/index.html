@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function closeMe() {
+            var win=window.open("","_self");
+            win.close();
+        }
+        /*]]>*/
+    </script>
+</head>
+<body>
+<form>
+    <input type="button" name="Close" onclick="closeMe()" value="이전 페이지로 돌아가기"/>
+</form>
+</body>
+</html>

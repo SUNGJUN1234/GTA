@@ -1,6 +1,10 @@
-package com.jsj.GTA.config.api.touristAttractions;
+package com.jsj.GTA.api.touristAttractions;
 
+import com.jsj.GTA.util.Crawler;
 import lombok.Getter;
+
+import java.io.IOException;
+import java.util.List;
 
 @Getter
 public class TouristAttractionsResponseDto {
@@ -16,8 +20,9 @@ public class TouristAttractionsResponseDto {
     private String tourDestIntro;
     private String mngAgcTel;
     private String mngAgcNm;
+    private List<String> images;
 
-    public TouristAttractionsResponseDto(TouristAttractions entity) {
+    public TouristAttractionsResponseDto(TouristAttractions entity) throws IOException {
         this.id = entity.getId();
         this.tourDestNm = entity.getTourDestNm();
         this.addrRoad = entity.getAddrRoad();
@@ -29,5 +34,6 @@ public class TouristAttractionsResponseDto {
         this.tourDestIntro = entity.getTourDestIntro();
         this.mngAgcTel = entity.getMngAgcTel();
         this.mngAgcNm = entity.getMngAgcNm();
+        this.images = Crawler.getImages(entity.getTourDestNm());
     }
 }

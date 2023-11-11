@@ -1,4 +1,4 @@
-package com.jsj.GTA.config.api.touristAttractions;
+package com.jsj.GTA.api.touristAttractions;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -64,7 +64,6 @@ public class TouristAttractionsRepository {
                 urlConnection.disconnect();
             }
         }
-        System.out.println("result = " + result);
         TourDestBaseInfo item = ParsingJson.JsonToTourDestBaseInfo(result);
         return item;
     }
@@ -99,7 +98,6 @@ public class TouristAttractionsRepository {
                 urlConnection.disconnect();
             }
         }
-        System.out.println("result = " + result);
         TourDestBaseInfo item = ParsingJson.JsonToTourDestBaseInfo(result);
         return item;
     }
@@ -145,3 +143,4 @@ public class TouristAttractionsRepository {
         return item.getTourDestBaseInfo().get(0);
     }
 }
+

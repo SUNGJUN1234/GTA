@@ -1,11 +1,11 @@
-package com.jsj.GTA.config.api.touristAttractions;
+package com.jsj.GTA.api.touristAttractions;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class TouristAttractionsController {
      * @return TouristAttractionsResponseDto
      */
     @GetMapping("/api/v1/touristAttractions/touristAttractions/{touristAttractionsId}")
-    public TouristAttractionsResponseDto findById(@PathVariable String touristAttractionsId) {
+    public TouristAttractionsResponseDto findById(@PathVariable String touristAttractionsId) throws IOException {
         return touristAttractionsService.findById(touristAttractionsId);
     }
 
@@ -41,7 +41,7 @@ public class TouristAttractionsController {
      * @return TouristAttractionsResponseDto
      */
     @GetMapping("/api/v1/touristAttractions/stamps/{stampsId}")
-    public TouristAttractionsResponseDto findByStampsIdDesc(@PathVariable Long stampsId) {
+    public TouristAttractionsResponseDto findByStampsIdDesc(@PathVariable Long stampsId) throws IOException {
         return touristAttractionsService.findByStampsIdDesc(stampsId);
     }
 
@@ -61,7 +61,7 @@ public class TouristAttractionsController {
      * @return List<TouristAttractionsResponseDto>
      */
     @GetMapping("/api/v1/touristAttractions/coordinate/{lat}/{lng}")
-    public TouristAttractionsResponseDto findByCoordinate(@PathVariable double lat, @PathVariable double lng) {
+    public TouristAttractionsResponseDto findByCoordinate(@PathVariable double lat, @PathVariable double lng) throws IOException {
         return touristAttractionsService.findByCoordinate(lat, lng);
     }
 

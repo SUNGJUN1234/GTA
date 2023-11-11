@@ -1,13 +1,12 @@
-package com.jsj.GTA.config.api.touristAttractions;
+package com.jsj.GTA.api.touristAttractions;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jsj.GTA.domain.stamps.*;
 import com.jsj.GTA.util.Coordinate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +27,7 @@ public class TouristAttractionsService {
      * @param id
      * @return TouristAttractionsResponseDto
      */
-    public TouristAttractionsResponseDto findById(String id) {
+    public TouristAttractionsResponseDto findById(String id) throws IOException {
         TouristAttractions entity = touristAttractionsRepository.findById(id);
         if (entity != null) new IllegalArgumentException("해당 스탬프가 없습니다. id = " + id);
 
@@ -51,7 +50,7 @@ public class TouristAttractionsService {
      *
      * @return TouristAttractionsResponseDto
      */
-    public TouristAttractionsResponseDto findByStampsIdDesc(Long id) {
+    public TouristAttractionsResponseDto findByStampsIdDesc(Long id) throws IOException {
         Stamps stamps = stampsRepository.findById(id).orElse(null);
         if (stamps == null) {
             new IllegalArgumentException("해당 스탬프가 없습니다. id = " + id);
@@ -86,7 +85,7 @@ public class TouristAttractionsService {
      *
      * @return List<TouristAttractionsResponseDto>
      */
-    public TouristAttractionsResponseDto findByCoordinate(double lat, double lng) {
+    public TouristAttractionsResponseDto findByCoordinate(double lat, double lng) throws IOException {
         TouristAttractions touristAttractions;
         touristAttractions = touristAttractionsRepository.findByCoordinate(lat, lng);
         return new TouristAttractionsResponseDto(touristAttractions);
