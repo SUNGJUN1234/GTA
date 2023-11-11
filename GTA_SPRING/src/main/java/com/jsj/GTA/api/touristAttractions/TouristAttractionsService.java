@@ -1,4 +1,4 @@
-package com.jsj.GTA.config.api.touristAttractions;
+package com.jsj.GTA.api.touristAttractions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jsj.GTA.domain.stamps.*;
