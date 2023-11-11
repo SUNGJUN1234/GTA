@@ -13,11 +13,14 @@ import java.util.Map;
 public class OAuthController {
 
     @GetMapping("/loginInfo")
-    public String oauthLoginInfo(Authentication authentication){
-        //oAuth2User.toString() 예시 : Name: [2346930276], Granted Authorities: [[USER]], User Attributes: [{id=2346930276, provider=kakao, name=김준우, email=bababoll@naver.com}]
+    public Map<String, Object> oauthLoginInfo(Authentication authentication){
+	if(!authentication.isAuthenticated()) {
+            return null;
+        }    
+	//oAuth2User.toString() 예시 : Name: [2346930276], Granted Authorities: [[USER]], User Attributes: [{id=234693027, provider=kakao, name=이름, email=이메일@naver.com}]
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-        //attributes.toString() 예시 : {id=2346930276, provider=kakao, name=김준우, email=bababoll@naver.com}
+        //attributes.toString() 예시 : {id=234693027, provider=kakao, name=이름, email=이메일@naver.com}
         Map<String, Object> attributes = oAuth2User.getAttributes();
-        return attributes.toString();
+        return attributes;
     }
 }
