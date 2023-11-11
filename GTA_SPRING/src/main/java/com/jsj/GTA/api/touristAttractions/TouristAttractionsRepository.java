@@ -64,7 +64,6 @@ public class TouristAttractionsRepository {
                 urlConnection.disconnect();
             }
         }
-        System.out.println("result = " + result);
         TourDestBaseInfo item = ParsingJson.JsonToTourDestBaseInfo(result);
         return item;
     }
@@ -99,7 +98,6 @@ public class TouristAttractionsRepository {
                 urlConnection.disconnect();
             }
         }
-        System.out.println("result = " + result);
         TourDestBaseInfo item = ParsingJson.JsonToTourDestBaseInfo(result);
         return item;
     }
@@ -145,3 +143,4 @@ public class TouristAttractionsRepository {
         return item.getTourDestBaseInfo().get(0);
     }
 }
+
