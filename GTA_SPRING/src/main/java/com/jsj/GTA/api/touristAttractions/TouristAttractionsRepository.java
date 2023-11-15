@@ -127,7 +127,7 @@ public class TouristAttractionsRepository {
      * 스탬프에 해당하는 하나의 관광지 조회
      * @return TouristAttractions
      */
-    public TouristAttractions findByStampsIdDesc(String id) {
+    public TouristAttractions findByStampsId(String id) {
         TourDestBaseInfo item = callApi("id", id);
         return item.getTourDestBaseInfo().get(0);
     }

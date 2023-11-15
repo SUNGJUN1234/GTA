@@ -36,6 +36,12 @@ dependencies {
 	// 스프링 프론트 타임리프
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
+	// redis -> 캐시 사용
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	// dto 변환 라이브러리
+	implementation 'org.modelmapper:modelmapper:3.1.1'
+
 	// h2
 //	implementation 'com.h2database:h2' // 인메모리 관계형 데이터베이스, 별도의 설치 없이 프로젝트 의존성만으로 관리 가능, 메모리에서 실행(재시작시 초기화-테스트 용이)
 //	runtimeOnly 'com.h2database:h2'

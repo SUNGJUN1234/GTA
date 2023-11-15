@@ -1,5 +1,6 @@
 package com.jsj.GTA.api.touristAttractions;
 
+import com.jsj.GTA.api.touristAttractions.redis.TouristAttractionsResponseRedisDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +25,10 @@ public class TouristAttractionsController {
     public TouristAttractionsResponseDto findById(@PathVariable String touristAttractionsId) throws IOException {
         return touristAttractionsService.findById(touristAttractionsId);
     }
-
+    @GetMapping("/api/v2/touristAttractions/touristAttractions/{touristAttractionsId}")
+    public TouristAttractionsResponseRedisDto findByIdWithRedis(@PathVariable String touristAttractionsId) throws IOException {
+        return touristAttractionsService.findByIdWithRedis(touristAttractionsId);
+    }
     /**
      * 전체 관광지 조회
      *
@@ -34,17 +38,25 @@ public class TouristAttractionsController {
     public List<TouristAttractionsListResponseDto> findAllDesc() {
         return touristAttractionsService.findAllDesc();
     }
+    @GetMapping("/api/v2/touristAttractions")
+    public List<TouristAttractionsResponseRedisDto> findAllDescWithRedis() {
+        return touristAttractionsService.findAllDescWithRedis();
+    }
 
+    
     /**
      * 스탬프(stampsId)에 해당하는 하나의 관광지 조회
      *
      * @return TouristAttractionsResponseDto
      */
     @GetMapping("/api/v1/touristAttractions/stamps/{stampsId}")
-    public TouristAttractionsResponseDto findByStampsIdDesc(@PathVariable Long stampsId) throws IOException {
-        return touristAttractionsService.findByStampsIdDesc(stampsId);
+    public TouristAttractionsResponseDto findByStampsId(@PathVariable Long stampsId) throws IOException {
+        return touristAttractionsService.findByStampsId(stampsId);
     }
-
+    @GetMapping("/api/v2/touristAttractions/stamps/{stampsId}")
+    public TouristAttractionsResponseRedisDto findByStampsIdWithRedis(@PathVariable Long stampsId) throws IOException {
+        return touristAttractionsService.findByStampsIdWithRedis(stampsId);
+    }
     /**
      * user1명이 가지고 있는 스탬프 전체의 관광지 조회
      *
@@ -53,6 +65,10 @@ public class TouristAttractionsController {
     @GetMapping("/api/v1/touristAttractions/users/{usersId}")
     public List<TouristAttractionsListResponseDto> findByUserIdDesc(@PathVariable Long usersId) {
         return touristAttractionsService.findByUserIdDesc(usersId);
+    }
+    @GetMapping("/api/v2/touristAttractions/users/{usersId}")
+    public List<TouristAttractionsResponseRedisDto> findByUserIdDescWithRedis(@PathVariable Long usersId) throws IOException {
+        return touristAttractionsService.findByUserIdDescWithRedis(usersId);
     }
 
     /**
@@ -64,7 +80,10 @@ public class TouristAttractionsController {
     public TouristAttractionsResponseDto findByCoordinate(@PathVariable double lat, @PathVariable double lng) throws IOException {
         return touristAttractionsService.findByCoordinate(lat, lng);
     }
-
+    @GetMapping("/api/v2/touristAttractions/coordinate/{lat}/{lng}")
+    public TouristAttractionsResponseRedisDto findByCoordinateWithRedis(@PathVariable double lat, @PathVariable double lng) throws IOException {
+        return touristAttractionsService.findByCoordinateWithRedis(lat, lng);
+    }
     /**
      * 주어진 좌표(lat,lng)로부터 가까운 count 개의 관광지 조회
      *
@@ -74,5 +93,8 @@ public class TouristAttractionsController {
     public List<TouristAttractionsListResponseDto> findByNearCoordinate(@PathVariable int count, @PathVariable double lat, @PathVariable double lng) {
         return touristAttractionsService.findByNearCoordinate(count, lat, lng);
     }
-
+    @GetMapping("/api/v2/touristAttractions/coordinate/near/{count}/{lat}/{lng}")
+    public List<TouristAttractionsResponseRedisDto> findByNearCoordinateWithRedis(@PathVariable int count, @PathVariable double lat, @PathVariable double lng) {
+        return touristAttractionsService.findByNearCoordinateWithRedis(count, lat, lng);
+    }
 }
