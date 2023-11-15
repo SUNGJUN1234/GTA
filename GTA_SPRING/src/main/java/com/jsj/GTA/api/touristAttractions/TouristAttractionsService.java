@@ -30,7 +30,7 @@ public class TouristAttractionsService {
     private final StampsRepository stampsRepository;
 
     private final TouristAttractionsRedisRepository touristAttractionsRedisRepository;
-    private final ModelMapper modelMapper;
+    private static final ModelMapper modelMapper = new ModelMapper();
 
     /**
      * 관광지 id로 조회
@@ -142,7 +142,7 @@ public class TouristAttractionsService {
         // 스탬프 조회
         Stamps stamps = stampsRepository.findById(id).orElse(null);
         if (stamps == null) {
-            LOGGER.info("[findByStampsIdWithRedis] No Data stamp");
+            LOGGER.info("[findByStampsId] No Data stamp");
             return null;
         }
         Optional<TouristAttractionsResponseRedisDto> cache = touristAttractionsRedisRepository.findById(stamps.getTouristAttractionsId());
