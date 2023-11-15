@@ -42,8 +42,9 @@ public class Crawler {
         Matcher matcher = pattern.matcher(html);
         Matcher visitorMatcher = visitorPattern.matcher(html);
         ArrayList<String> list = new ArrayList<>();
+        int photoSize = 5; // 사진 개수
         // 시설 관리자가 올린 사진 우선
-        while (matcher.find()) {
+        while (matcher.find()&&list.size()<photoSize) {
             String photoUrl = decodeUrlsUnicodeToSlash(matcher.group(1));
             list.add(photoUrl);
         }
@@ -53,7 +54,7 @@ public class Crawler {
                 // 각 URL 추출
                 Pattern urlPattern = Pattern.compile("\"([^\"\\\\]*(?:\\\\.[^\"\\\\]*)*)\"");
                 Matcher urlMatcher = urlPattern.matcher(thumbnailUrlListStr);
-            while (urlMatcher.find()) {
+            while (urlMatcher.find()&&list.size()<photoSize) {
                 String photoUrl = decodeUrlsUnicodeToSlash(urlMatcher.group(1));
                 list.add(photoUrl);
             }
