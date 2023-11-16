@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @RedisHash(value = "touristAttractionsWithImageUrl")
 public class TouristAttractionsResponseRedisDto {
+    //redis에 저장할 자료구조
     @Id
     private String id;
     private String tourDestNm;
