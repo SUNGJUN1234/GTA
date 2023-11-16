@@ -12,6 +12,7 @@ import java.util.List;
 @ToString
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @RedisHash(value = "touristAttractionsWithImageUrl")
 public class TouristAttractionsResponseRedisDto {
     @Id
