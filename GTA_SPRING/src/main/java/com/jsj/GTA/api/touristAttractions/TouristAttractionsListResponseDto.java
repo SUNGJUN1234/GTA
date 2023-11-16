@@ -34,9 +34,9 @@ public class TouristAttractionsListResponseDto {
         this.tourDestIntro = entity.getTourDestIntro();
         this.mngAgcTel = entity.getMngAgcTel();
         this.mngAgcNm = entity.getMngAgcNm();
-        try {
-            this.images = Crawler.getImages(entity.getTourDestNm());
-        } catch (Exception e) {
-        }
+        // try {
+        //     this.images = Crawler.getImages(entity.getTourDestNm());
+        // } catch (Exception e) {
+        // }
     }
 }
