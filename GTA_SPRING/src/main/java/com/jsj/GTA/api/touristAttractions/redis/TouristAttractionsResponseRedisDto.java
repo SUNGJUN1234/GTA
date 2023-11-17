@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @RedisHash(value = "touristAttractionsWithImageUrl")
 public class TouristAttractionsResponseRedisDto {
-    //redis에 저장할 자료구조
     @Id
     private String id;
     private String tourDestNm;
@@ -23,9 +22,9 @@ public class TouristAttractionsResponseRedisDto {
     private String addrRoad;
     private String addrJibun;
     @Indexed
-    private String lat;
+    private double lat;
     @Indexed
-    private String lng;
+    private double lng;
     private String area;
     private String publicConvFcltInfo;
     private String tourDestIntro;
@@ -40,8 +39,8 @@ public class TouristAttractionsResponseRedisDto {
                 entity.getOperationRuleNm(),
                 entity.getAddrRoad(),
                 entity.getAddrJibun(),
-                entity.getLat(),
-                entity.getLng(),
+                Double.parseDouble(entity.getLat()), // redis 지리공간 메서드 확장성을 위해 double 로 저장
+                Double.parseDouble(entity.getLng()),
                 entity.getArea(),
                 entity.getPublicConvFcltInfo(),
                 entity.getTourDestIntro(),
