@@ -1,5 +1,6 @@
 package com.jsj.GTA.util;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
@@ -9,6 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Crawler {
+
+    private static final String USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36";
 
     private static final String BASE_URL = "https://m.map.naver.com/search2/search.naver?query=";
     private static final Pattern ID_PATTERN = Pattern.compile("\"id\": \"(\\d+)\"");
@@ -82,7 +85,12 @@ public class Crawler {
      * @throws IOException
      */
     public static String getHTMLDocument(String url) throws IOException {
-        return Jsoup.connect(url).get().toString();
+        return Jsoup.connect(url)
+                .header("Content-Type", "application/json;charset=UTF-8")
+                .userAgent(USER_AGENT)
+                .method(Connection.Method.GET)
+                .ignoreContentType(true)
+                .get().toString();
     }
 
     /**
