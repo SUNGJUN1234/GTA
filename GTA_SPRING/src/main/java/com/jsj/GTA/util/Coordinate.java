@@ -34,8 +34,8 @@ public class Coordinate {
 
         return coordinates.stream()
                 .sorted(Comparator.comparingDouble(coordinate -> {
-                    double listLat = Double.parseDouble(coordinate.getLat());
-                    double listLng = Double.parseDouble(coordinate.getLng());
+                    double listLat = coordinate.getLat();
+                    double listLng = coordinate.getLng();
                     return Math.sqrt(Math.pow(listLat - lat, 2) + Math.pow(listLng - lng, 2));
                 }))
                 .limit(count)
