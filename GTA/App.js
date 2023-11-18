@@ -15,17 +15,17 @@ export default function App() {
   const { position, setPosition , userInfo , setUserInfo , now , setNow } = useAppContext(); // 전역 변수
 
   const requestUserInfo = async () => {
-    try{
-      const userInfoResponse = await axios.get(awsServer.url + '/oauth/loginInfo');
+    // try{
+    //   const userInfoResponse = await axios.get(awsServer.url + '/oauth/loginInfo');
       
-      const response = userInfoResponse.request._response;
-      setUserInfo(response);
+    //   const response = userInfoResponse.request._response;
+    //   setUserInfo(response);
 
-    } catch(e){
-      console.log(e);
-    } finally {
+    // } catch(e){
+    //   console.log(e);
+    // } finally {
 
-    }
+    // }
   }
 
   const requestLocationPermission = async () => {

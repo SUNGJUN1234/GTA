@@ -2,9 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { useAppContext } from '../global/AppContext';
 import MapView, { Marker } from 'react-native-maps';
+import { theme } from '../global/colors';
 
 const Map = () => {
   const { position, setPosition , userInfo , setUserInfo , now , setNow } = useAppContext(); // 전역 변수
+
+  if(now.length === 0 ){
+    return;
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -18,14 +23,26 @@ const Map = () => {
        longitudeDelta: 0.01, // 작은 값으로 변경하여 더 확대
      }}
    >
-     <Marker
+    {now.map((item, idx) => (
+      <Marker 
+        key={idx}
+        coordinate={{
+          latitude: parseFloat(item.lat),
+          longitude: parseFloat(item.lng),
+        }}
+        title={item.tourDestNm}
+        description={item.addrRoad?item.addrRoad:item.addrJibun}
+        pinColor={theme.color1}
+     />
+    ))}
+      <Marker
        coordinate={{
          latitude: position.lat,
          longitude: position.lng,
        }}
-       title="내 위치"
-       description="위치 설명"
+       title="현재 위치"
      />
+     
    </MapView>
       ) : (
         <Text>위치 정보를 불러오는 중...</Text>

@@ -49,7 +49,26 @@ function ProfileScreen() {
   );
 }
 
+async function stamping(now) {
+  try{
+    const data = {
+      touristAttractionsId : now[0].id,
+      usersId : 1,
+      name : now[0].tourDestNm+' 스탬프',
+      issueDate : null,
+      expirationDate : null,
+    }
+    await axios.post(
+      awsServer.url + `/api/v1/stamps`,
+      data,
+    ).then((res) => {
+      console.log("스탬프 성공!");
+    })
 
+  }catch(e) {
+    console.error(e);
+  }
+}
 
 export default function App() {
   const { position, setPosition , userInfo , setUserInfo , now , setNow } = useAppContext(); // 전역 변수
@@ -71,7 +90,7 @@ export default function App() {
       screenOptions={({ route }) => ({
       headerTitle: () => (
         <View>
-          <Text style={styles.titleText}>현재위치 : {now.tourDestNm ??'...검색중...' }</Text>
+          <Text style={styles.titleText}>현재위치 : {now[0]?.tourDestNm ??'...검색중...' }</Text>
         </View>
       ),
       headerRight: () => {
@@ -88,7 +107,8 @@ export default function App() {
           return (
             <TouchableOpacity
               style={styles.stampBtn}
-              onPress={() => alert('스탬프 찍기!')}
+
+              onPress={() => stamping(now)}
             >
               <FontAwesome5 name='stamp' size={16} color='white' />
               <Text style={styles.stampText}>스탬프 찍기</Text>

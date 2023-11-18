@@ -27,15 +27,11 @@ const Home = () => {
 
   const loadHome = async () => {
     try {
-      const allReponse = await axios.get(awsServer.url + "/api/v1/touristAttractions");
-
-      setAllTaArr(allReponse.data);
-
+      // const allReponse = await axios.get(awsServer.url + "/api/v1/touristAttractions");
+      // setAllTaArr(allReponse.data);
       const nearResponse = await axios.get(awsServer.url + `/api/v1/touristAttractions/coordinate/near/4/${position.lat}/${position.lng}`);
-
-      setNow(nearResponse.data[0]);
       console.log(nearResponse.data[0]);
-
+      setNow(nearResponse.data);
 
       const updatedNearDataArr = nearResponse.data.map((item) => ({ 
         ...item, 
@@ -96,7 +92,7 @@ const Home = () => {
 
       <View style={styles.infoView}>
         <Image source={require('../../assets/line1.png')} style={styles.lineImg} />
-        <Text style={styles.infoText}>{now.tourDestIntro}</Text>
+        <Text style={styles.infoText}>{now[0].tourDestIntro}</Text>
         <Image source={require('../../assets/line1.png')} style={styles.lineImg} />
       </View>
 
