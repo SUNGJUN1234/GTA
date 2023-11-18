@@ -24,7 +24,7 @@ public class StampsSaveRequestDto {
         this.touristAttractionsId = touristAttractionsId;
         this.usersId = usersId;
         this.name = name;
-        this.issueDate = issueDate;
+        this.issueDate = new Date().toString();
         this.expirationDate = expirationDate;
     }
 
