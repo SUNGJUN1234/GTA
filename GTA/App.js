@@ -16,7 +16,8 @@ export default function App() {
 
   const requestUserInfo = async () => {
     try{
-      const userInfoResponse = await axios.get(awsServer.url);
+      const userInfoResponse = await axios.get(awsServer.url + '/oauth/loginInfo');
+      
       const response = userInfoResponse.request._response;
       setUserInfo(response);
 
@@ -72,7 +73,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    console.log("1");
     console.log(userInfo);
     if (typeof userInfo === 'string') {
       console.log("스트링");

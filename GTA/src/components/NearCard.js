@@ -11,13 +11,13 @@ const NearCard = ({data}) => {
       <Image source={require('../../assets/line2.png')} style={styles.lineImg} />
       <View style={styles.upView}>
         <View style={styles.imgView}>
-          <Image source={data.imgUrl} style={styles.cardImg}/>
+          <Image source={data.imgUrl ? data.imgUrl : require('../../assets/test2.png') } style={styles.cardImg}/>
         </View>
         <View style={styles.detailView}>
-          <Text style={styles.nameText}>{data.name}</Text>
+          <Text style={styles.nameText}>{data.tourDestNm}</Text>
           <Text>거리 : {data.distance}m</Text>
-          <Text>시설 : {data.facilities}</Text>
-          <Text>주소 : {data.address}</Text>
+          <Text>시설 : {data.publicConvFcltInfo}</Text>
+          <Text>주소 : {data.addrJibun? data.addrJibun:data.addrRoad}</Text>
         </View>
       </View>
       <View style={styles.downView}>

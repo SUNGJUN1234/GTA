@@ -56,22 +56,18 @@ export default function App() {
   const [loading , setLoading] = useState(true);
   const nowLocation = "첨성대";
 
-
-  const loadUserInfo = async() => {
-    setLoading(false);
-  }
   // 유저 정보 불러오기
   useEffect(()=>{
-    loadUserInfo();  
+    setLoading(false);
   },[]);
 
-  // if (loading) {
-  //   return;
-  // }
+  if (loading) {
+    return;
+  }
   
   return (
     <Tab.Navigator
-      initialRouteName={userInfo === null ? 'LoginScreen': 'HomeScreen'}
+      initialRouteName={userInfo !== null ? 'LoginScreen': 'HomeScreen'}
       screenOptions={({ route }) => ({
       headerTitle: () => (
         <View>
