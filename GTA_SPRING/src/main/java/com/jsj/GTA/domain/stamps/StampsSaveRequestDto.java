@@ -16,7 +16,7 @@ public class StampsSaveRequestDto {
     private String touristAttractionsId;
     private Long usersId;
     private String name;
-    private String  issueDate;
+    private String  issueDate = new Date().toString();
     private String  expirationDate;
 
     @Builder
@@ -24,7 +24,7 @@ public class StampsSaveRequestDto {
         this.touristAttractionsId = touristAttractionsId;
         this.usersId = usersId;
         this.name = name;
-        this.issueDate = new Date().toString();
+//        this.issueDate = ;
         this.expirationDate = expirationDate;
     }
 
