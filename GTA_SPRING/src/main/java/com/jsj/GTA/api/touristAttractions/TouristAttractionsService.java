@@ -265,36 +265,52 @@ public class TouristAttractionsService {
         // 좌표를 비교하는 알고리즘 사용하여 값을 반환
         return Coordinate.findClosestCoordinates(responseList, count, lat, lng);
     }
-    public List<TouristAttractionsResponseRedisDto> findByNearCoordinateWithRedis(int count, double lat, double lng) {
+    public List<TouristAttractionsResponseRedisDto> findByNearCoordinateWithRedis(int count, double lat, double lng) throws IOException {
+        LOGGER.info("[findByNearCoordinateWithRedis] request data");
         // 전체 관광지 조회,
         // list 에 담고,
-        LOGGER.info("[findByNearCoordinateWithRedis] request data");
-        Iterator<TouristAttractionsResponseRedisDto> iteratorCache = touristAttractionsRedisRepository.findAll().iterator();
-        List<TouristAttractionsResponseRedisDto> cache = new ArrayList<>();
-        while (iteratorCache.hasNext()) {
-            cache.add(iteratorCache.next());
-        }
-        // 캐시 데이터가 존재하면 캐시 데이터 반환
-        if (!cache.isEmpty()) {
-            LOGGER.info("[findByNearCoordinateWithRedis] Cache Data existed.");
-            Coordinate.findClosestCoordinatesWithRedis(cache, count, lat, lng);
-        } else {
-            LOGGER.info("[findByNearCoordinateWithRedis] Cache Data dose not existed.");
-        }
-        // 존재하지 않으면
         // 데이터 조회
         List<TouristAttractionsListResponseDto> entity = touristAttractionsRepository.findAllDesc().stream()
                 .map(TouristAttractionsListResponseDto::new)
                 .toList();
         if (entity.isEmpty()) {
             LOGGER.info("[findByNearCoordinateWithRedis] No Data entity");
+            return null;
         }
-        // redis 저장 및 데이터 반환
-        List<TouristAttractionsResponseRedisDto> responseRedisDtoList = entity.stream()
-                .map(entityList -> modelMapper.map(entityList, TouristAttractionsResponseRedisDto.class))
-                .collect(Collectors.toList());
-        touristAttractionsRedisRepository.saveAll(responseRedisDtoList);
         // 좌표를 비교하는 알고리즘 사용하여 값을 반환
-        return Coordinate.findClosestCoordinatesWithRedis(responseRedisDtoList, count, lat, lng);
+        List<TouristAttractionsListResponseDto> coordinateResult = Coordinate.findClosestCoordinates(entity, count, lat, lng);
+        // 반환한 값을 토대로 새로운 리스트 생성 및 반환
+        if(coordinateResult.isEmpty()) {
+            LOGGER.info("[findByNearCoordinateWithRedis] No Data coordinateResult");
+            return null;
+        }
+        LOGGER.info("[findByNearCoordinateWithRedis] 좌표 리스트에 해당하는 캐시 데이터 가져오기");
+        List<TouristAttractionsResponseRedisDto> result = new ArrayList<>();
+        for (TouristAttractionsListResponseDto dto : coordinateResult) {
+            String touristAttractionsId = dto.getId();
+            Optional<TouristAttractionsResponseRedisDto> cache = touristAttractionsRedisRepository.findById(touristAttractionsId);
+            // 캐시 데이터가 존재하면 캐시 데이터 반환
+            if (cache.isPresent()) {
+                LOGGER.info("[findByNearCoordinateWithRedis] Cache Data existed.");
+                result.add(cache.get());
+                continue;
+            } else {
+                LOGGER.info("[findByNearCoordinateWithRedis] Cache Data dose not existed.");
+            }
+            // 캐시 데이터가 존재하지 않으면 캐시 데이터 저장
+            // 먼저 데이터를 api 에서 가져오고
+            TouristAttractionsResponseDto touristAttractionsEntity = findById(touristAttractionsId);
+
+            if (touristAttractionsEntity == null) {
+                LOGGER.info("[findByUserIdDescWithRedis] No Data touristAttractionsEntity");
+                continue;
+            }
+            // 가져온 데이터가 있으면 redis 에 저장 및 반환
+            TouristAttractionsResponseRedisDto redisDto = TouristAttractionsResponseRedisDto.createDto(touristAttractionsEntity);
+            touristAttractionsRedisRepository.save(redisDto);
+
+            result.add(redisDto);
+        }
+        return result;
     }
 }
