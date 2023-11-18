@@ -12,7 +12,7 @@ import { awsServer } from './src/server';
 
 export default function App() {
   const navigationRef = useRef(null);
-  const { position, setPosition , userInfo , setUserInfo } = useAppContext(); // 전역 변수
+  const { position, setPosition , userInfo , setUserInfo , now , setNow } = useAppContext(); // 전역 변수
 
   const requestUserInfo = async () => {
     try{

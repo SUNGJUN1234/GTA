@@ -11,14 +11,13 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const Home = () => {
 
-  const { position, setPosition , userInfo , setUserInfo } = useAppContext(); // 전역 변수
+  const { position, setPosition , userInfo , setUserInfo , now , setNow } = useAppContext(); // 전역 변수
   const [loading, setLoading] = useState(true);
   const [allTaArr, setAllTaArr] = useState([]);
   const [nearDataArr, setNearDataArr] = useState([]);
 
   // 현재 관광지 데이너
-  const infoText = "첨성대는 경상북도 경주시 반월성 동북쪽에 위치한 신라 중기의 석조 건축물로, 선덕여왕 때에 세워진 세계에서 현존하는 가장 오래된 천문대 중 하나이다. 1962년 12월 20일 국보 제31호로 지정되었다."
-  const [bannerData, setBannerData] = useState([
+   const [bannerData, setBannerData] = useState([
     { url: require('../../assets/test1.png') },
     { url: require('../../assets/test2.png') },
     { url: require('../../assets/test3.png') },
@@ -32,7 +31,12 @@ const Home = () => {
 
       setAllTaArr(allReponse.data);
 
-      const nearResponse = await axios.get(awsServer.url + `/api/v2/touristAttractions/coordinate/near/4/${position.lat}/${position.lng}`);
+      const nearResponse = await axios.get(awsServer.url + `/api/v1/touristAttractions/coordinate/near/4/${position.lat}/${position.lng}`);
+
+      setNow(nearResponse.data[0]);
+      console.log(nearResponse.data[0]);
+
+
       const updatedNearDataArr = nearResponse.data.map((item) => ({ 
         ...item, 
         distance: parseInt((Math.sqrt(Math.pow((Math.abs(item.lat) - Math.abs(position.lat)), 2) + Math.pow(Math.abs(item.lng) - Math.abs(position.lng), 2)))*111000)
@@ -92,7 +96,7 @@ const Home = () => {
 
       <View style={styles.infoView}>
         <Image source={require('../../assets/line1.png')} style={styles.lineImg} />
-        <Text style={styles.infoText}>{infoText}</Text>
+        <Text style={styles.infoText}>{now.tourDestIntro}</Text>
         <Image source={require('../../assets/line1.png')} style={styles.lineImg} />
       </View>
 

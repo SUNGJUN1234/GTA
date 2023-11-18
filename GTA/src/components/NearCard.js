@@ -5,7 +5,6 @@ import { theme } from '../global/colors';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const NearCard = ({data}) => {
-
   return (
     <View style={styles.nearCardTopView}>
       <Image source={require('../../assets/line2.png')} style={styles.lineImg} />

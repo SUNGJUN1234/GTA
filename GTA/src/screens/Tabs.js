@@ -52,7 +52,7 @@ function ProfileScreen() {
 
 
 export default function App() {
-  const { position, setPosition , userInfo , setUserInfo } = useAppContext(); // 전역 변수
+  const { position, setPosition , userInfo , setUserInfo , now , setNow } = useAppContext(); // 전역 변수
   const [loading , setLoading] = useState(true);
   const nowLocation = "첨성대";
 
@@ -71,7 +71,7 @@ export default function App() {
       screenOptions={({ route }) => ({
       headerTitle: () => (
         <View>
-          <Text style={styles.titleText}>현재위치 : {nowLocation}</Text>
+          <Text style={styles.titleText}>현재위치 : {now.tourDestNm ??'...검색중...' }</Text>
         </View>
       ),
       headerRight: () => {
