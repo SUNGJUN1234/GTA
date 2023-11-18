@@ -40,7 +40,7 @@ public class SecurityConfig {
 				new AntPathRequestMatcher("/oauth/loginInfo")
 			).permitAll()
 //                        .requestMatchers(new AntPathRequestMatcher("/api/v1/**")).hasRole(Role.USER.name())
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
 
                 .logout((logout) -> logout
                         .logoutSuccessUrl("/"))
