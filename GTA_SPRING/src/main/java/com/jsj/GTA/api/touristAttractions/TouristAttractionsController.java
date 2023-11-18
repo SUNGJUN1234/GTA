@@ -94,7 +94,7 @@ public class TouristAttractionsController {
         return touristAttractionsService.findByNearCoordinate(count, lat, lng);
     }
     @GetMapping("/api/v2/touristAttractions/coordinate/near/{count}/{lat}/{lng}")
-    public List<TouristAttractionsResponseRedisDto> findByNearCoordinateWithRedis(@PathVariable int count, @PathVariable double lat, @PathVariable double lng) {
+    public List<TouristAttractionsResponseRedisDto> findByNearCoordinateWithRedis(@PathVariable int count, @PathVariable double lat, @PathVariable double lng) throws IOException {
         return touristAttractionsService.findByNearCoordinateWithRedis(count, lat, lng);
     }
 }

@@ -33,7 +33,7 @@ public class StampsSaveRequestDto {
                 .touristAttractionsId(touristAttractionsId)
                 .usersId(usersId)
                 .name(name)
-                .issueDate(issueDate)
+                .issueDate(new Date().toString())
                 .build();
     }
 }
