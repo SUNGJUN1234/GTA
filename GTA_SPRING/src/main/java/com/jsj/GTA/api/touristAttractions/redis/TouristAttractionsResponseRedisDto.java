@@ -4,7 +4,9 @@ import com.jsj.GTA.api.touristAttractions.TouristAttractionsResponseDto;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.RedisKeyValueAdapter;
 import org.springframework.data.redis.core.index.Indexed;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @RedisHash(value = "touristAttractionsWithImageUrl")
+@EnableRedisRepositories(enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP)
 public class TouristAttractionsResponseRedisDto {
     @Id
     private String id;

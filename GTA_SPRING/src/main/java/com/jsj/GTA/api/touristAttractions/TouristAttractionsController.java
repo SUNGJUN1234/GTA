@@ -1,7 +1,11 @@
 package com.jsj.GTA.api.touristAttractions;
 
+import com.jsj.GTA.api.touristAttractions.redis.GeospatialService;
+import com.jsj.GTA.api.touristAttractions.redis.TouristAttractionsGeoResponseDto;
 import com.jsj.GTA.api.touristAttractions.redis.TouristAttractionsResponseRedisDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.geo.GeoResults;
+import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +18,7 @@ import java.util.List;
 public class TouristAttractionsController {
 
     private final TouristAttractionsService touristAttractionsService;
+    private final GeospatialService geospatialService;
 
     /**
      * 관광지 id로 조회
@@ -28,6 +33,12 @@ public class TouristAttractionsController {
     @GetMapping("/api/v2/touristAttractions/touristAttractions/{touristAttractionsId}")
     public TouristAttractionsResponseRedisDto findByIdWithRedis(@PathVariable String touristAttractionsId) throws IOException {
         return touristAttractionsService.findByIdWithRedis(touristAttractionsId);
+    }
+    @GetMapping("/api/v3/touristAttractions/touristAttractions/{touristAttractionsId}")
+    public TouristAttractionsResponseRedisDto findByIdWithGeo(@PathVariable String touristAttractionsId) throws IOException {
+        TouristAttractionsResponseRedisDto dto = touristAttractionsService.findByIdWithRedis(touristAttractionsId);
+        geospatialService.save(dto.getId(), dto.getLat(), dto.getLng());
+        return dto;
     }
     /**
      * 전체 관광지 조회
@@ -96,5 +107,12 @@ public class TouristAttractionsController {
     @GetMapping("/api/v2/touristAttractions/coordinate/near/{count}/{lat}/{lng}")
     public List<TouristAttractionsResponseRedisDto> findByNearCoordinateWithRedis(@PathVariable int count, @PathVariable double lat, @PathVariable double lng) throws IOException {
         return touristAttractionsService.findByNearCoordinateWithRedis(count, lat, lng);
+    }
+    @GetMapping("/api/v3/touristAttractions/coordinate/near/{count}/{lat}/{lng}")
+    public List<TouristAttractionsGeoResponseDto> findByNearCoordinateWithGeo(@PathVariable int count, @PathVariable double lat, @PathVariable double lng) throws IOException {
+        // redis 로 부터 좌표 정보를 불러오고
+        GeoResults<RedisGeoCommands.GeoLocation<String>> radius =  geospatialService.findGeoFromLatAndLng(count, lat, lng);
+        // 좌표 정보에 있는 관광지 Id 에 부합하는 관광지 리스트 불러오기
+        return geospatialService.findTouristAttractionsByGeo(radius);
     }
 }
