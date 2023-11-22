@@ -46,7 +46,7 @@ public class TouristAttractionsController {
     @Operation(summary = "관광지 한 곳 조회", description = "관광지 한 곳의 id를 받고 관광지 id에 해당하는 관광지 조회")
     @Parameter(name = "touristAttractionsId", description = "관광지 id")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsResponseRedisDto.class)))
-    @GetMapping("/v3/touristAttractions/{touristAttractionsId}")
+    @GetMapping("/v3/find/{touristAttractionsId}")
     public TouristAttractionsResponseRedisDto findByIdWithGeo(@PathVariable String touristAttractionsId) throws IOException {
         TouristAttractionsResponseRedisDto dto = touristAttractionsService.findByIdWithRedis(touristAttractionsId);
         geospatialService.save(dto.getId(), dto.getLat(), dto.getLng());
@@ -91,10 +91,10 @@ public class TouristAttractionsController {
     public TouristAttractionsResponseRedisDto findByStampsIdWithRedis(@PathVariable Long stampsId) throws IOException {
         return touristAttractionsService.findByStampsIdWithRedis(stampsId);
     }
-    @Operation(summary = "스탬프 하나 조회", description = "스탬프 하나의 id를 받고 스탬프를 발급한 관광지 조회")
+    @Operation(summary = "스탬프 하나에 대응되는 관광지 조회", description = "스탬프 하나의 id를 받고 스탬프를 발급한 관광지 조회")
     @Parameter(name = "stampsId", description = "스탬프 id")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsResponseRedisDto.class)))
-    @GetMapping("/v3/stamps/{stampsId}")
+    @GetMapping("/v3/find/{stampsId}")
     public TouristAttractionsResponseRedisDto findByStampsIdWithRedis2(@PathVariable Long stampsId) throws IOException {
         return touristAttractionsService.findByStampsIdWithRedis(stampsId);
     }
@@ -116,7 +116,7 @@ public class TouristAttractionsController {
     @Operation(summary = "사용자가 보유한 스탬프들에 대응되는 관광지 조회", description = "사용자 한 명의 id를 받고 보유한 스탬프 id에 대응되는 관광지 조회")
     @Parameter(name = "usersId", description = "사용자 id")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsResponseRedisDto.class)))
-    @GetMapping("/v3/users/{usersId}")
+    @GetMapping("/v3/find/{usersId}")
     public List<TouristAttractionsResponseRedisDto> findByUserIdDescWithRedis2(@PathVariable Long usersId) throws IOException {
         return touristAttractionsService.findByUserIdDescWithRedis(usersId);
     }
@@ -135,11 +135,11 @@ public class TouristAttractionsController {
     public TouristAttractionsResponseRedisDto findByCoordinateWithRedis(@PathVariable double lat, @PathVariable double lng) throws IOException {
         return touristAttractionsService.findByCoordinateWithRedis(lat, lng);
     }
-    @Operation(summary = "좌표에 해당하는 관광지 조회", description = "좌표 정보를 받고 좌표 정보에 해당하는 관광지 조회")
+    @Operation(summary = "좌표에 대응되는 관광지 조회", description = "좌표 정보를 받고 좌표 정보에 해당하는 관광지 조회")
     @Parameter(name = "lat", description = "관광지 lat")
     @Parameter(name = "lng", description = "관광지 lng")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsResponseRedisDto.class)))
-    @GetMapping("/v3/coordinate/{lat}/{lng}")
+    @GetMapping("/v3/find/{lat}/{lng}")
     public TouristAttractionsResponseRedisDto findByCoordinateWithRedis2(@PathVariable double lat, @PathVariable double lng) throws IOException {
         return touristAttractionsService.findByCoordinateWithRedis(lat, lng);
     }
@@ -162,7 +162,8 @@ public class TouristAttractionsController {
     @Parameter(name = "count", description = "조회할 관광지 수")
     @Parameter(name = "lat", description = "현재 lat")
     @Parameter(name = "lng", description = "현재 lng")
-    @GetMapping("/v3/coordinate/near/{count}/{lat}/{lng}")
+    @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsGeoResponseDto.class)))
+    @GetMapping("/v3/find/near/{count}/{lat}/{lng}")
     public List<TouristAttractionsGeoResponseDto> findByNearCoordinateWithGeo(@PathVariable int count, @PathVariable double lat, @PathVariable double lng) throws IOException {
         // redis 로 부터 좌표 정보를 불러오고
         GeoResults<RedisGeoCommands.GeoLocation<String>> radius =  geospatialService.findGeoFromLatAndLng(count, lat, lng);
