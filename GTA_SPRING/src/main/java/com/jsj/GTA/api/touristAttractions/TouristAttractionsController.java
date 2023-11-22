@@ -16,6 +16,7 @@ import org.springframework.data.geo.GeoResults;
 import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -23,7 +24,8 @@ import java.util.List;
 
 @Tag(name = "관광지 API", description = "관광지에 대한 controller")
 @RequiredArgsConstructor
-@RestController(value = "/api/touristAttractions")
+@RestController
+@RequestMapping("/api/touristAttractions")
 public class TouristAttractionsController {
 
     private final TouristAttractionsService touristAttractionsService;

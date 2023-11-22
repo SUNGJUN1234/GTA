@@ -21,7 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RestController(value = "/api/stamps")
+@RestController
+@RequestMapping("/api/stamps")
 public class StampsController {
     // API 를 만들기 위해 3개의 클래스가 필요함
     // Request 데이터를 받을 Dto
