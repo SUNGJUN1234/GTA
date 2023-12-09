@@ -1,7 +1,12 @@
 package com.jsj.GTA.service;
 
+import com.jsj.GTA.api.touristAttractions.TouristAttractionsRepository;
+import com.jsj.GTA.api.touristAttractions.TouristAttractionsService;
+import com.jsj.GTA.api.touristAttractions.redis.TouristAttractionsRedisRepository;
 import com.jsj.GTA.domain.stamps.*;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,9 +15,11 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-@Transactional(readOnly = true) // 트랜잭션 범위는 유지, 조회기능만 남겨서 조회 속도 개선 (등록,수정,삭제 기능이 전혀 없는 서비스 메소드에서 사용) 기본 세팅을 하고, readOnly 가 아닌 경우만 따로 명시
+@Transactional(readOnly = true)
+// 트랜잭션 범위는 유지, 조회기능만 남겨서 조회 속도 개선 (등록,수정,삭제 기능이 전혀 없는 서비스 메소드에서 사용) 기본 세팅을 하고, readOnly 가 아닌 경우만 따로 명시
 public class StampsService {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(TouristAttractionsService.class);
     private final StampsRepository stampsRepository;
 
     /**
@@ -20,22 +27,35 @@ public class StampsService {
      */
     @Transactional
     public Long save(StampsSaveRequestDto requestDto) {
+        LOGGER.info("StampsService[save] save data : {}", requestDto);
         return stampsRepository.save(requestDto.toEntity()).getId();
+    }
+
+    public boolean isDuplicate(StampsSaveRequestDto dto) {
+        // 사용자 아이디, 관광지 아이디 기반으로 조회
+        if(stampsRepository.findByUserIdAndTouristAttractionsId(dto.getUsersId(), dto.getTouristAttractionsId()).isPresent()) {
+            return true; // 중복o
+        } else {
+            return false; // 중복x
+        }
     }
 
     /**
      * 스탬프 id로 조회
+     *
      * @param id
      * @return StampsResponseDto
      */
     public StampsResponseDto findById(Long id) {
+        LOGGER.info("StampsService[findById] request data : {}", id);
         Stamps entity = stampsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 스탬프가 없습니다. id = "+id));
+                .orElseThrow(() -> new IllegalArgumentException("해당 스탬프가 없습니다. id = " + id));
         return new StampsResponseDto(entity);
     }
 
     /**
      * 전체 스탬프 조회
+     *
      * @return List<StampsResponseDto>
      */
     public List<StampsListResponseDto> findAllDesc() {
@@ -46,6 +66,7 @@ public class StampsService {
 
     /**
      * user1명의 전체 스탬프 조회
+     *
      * @return List<StampsResponseDto>
      */
     public List<StampsListResponseDto> findByUserIdDesc(Long id) {
@@ -56,6 +77,7 @@ public class StampsService {
 
     /**
      * user 1 명의 스탬프 개수 조회
+     *
      * @param id
      * @return
      */
@@ -65,6 +87,7 @@ public class StampsService {
 
     /**
      * 스탬프개수별 user 내림차순
+     *
      * @return List<UsersStampCountDto>
      */
     public List<UsersStampCountDto> findByUsersRankWithStampCountDesc() {
@@ -73,6 +96,7 @@ public class StampsService {
 
     /**
      * 스탬프개수별 user limit 명 내림차순
+     *
      * @return List<UsersStampCountDto>
      */
     public List<UsersStampCountDto> findByUsersRankWithStampCountLimitDesc(int limit) {
@@ -81,6 +105,7 @@ public class StampsService {
 
     /**
      * touristAttraction 하나의 전체 스탬프 조회
+     *
      * @return List<StampsResponseDto>
      */
     public List<StampsListResponseDto> findByTouristAttractionsIdDesc(String id) {
@@ -142,7 +167,7 @@ public class StampsService {
     @Transactional
     public void delete(Long id) {
         Stamps stamps = stampsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 스탬프가 없습니다. id = "+id));
+                .orElseThrow(() -> new IllegalArgumentException("해당 스탬프가 없습니다. id = " + id));
         stampsRepository.delete(stamps);
     }
 
