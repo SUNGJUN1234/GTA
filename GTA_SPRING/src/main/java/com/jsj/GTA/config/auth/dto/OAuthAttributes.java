@@ -1,77 +1,80 @@
 package com.jsj.GTA.config.auth.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jsj.GTA.domain.users.Role;
 import com.jsj.GTA.domain.users.Status;
 import com.jsj.GTA.domain.users.Users;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.Map;
 
 @Getter
+@NoArgsConstructor
 public class OAuthAttributes {
-    private Map<String, Object> attributes;
-    private String nameAttributeKey;
-    private String name;
-    private String email;
-    private String picture;
 
-    @Builder
-    public OAuthAttributes(Map<String,Object> attributes,
-                           String nameAttributeKey,
-                           String name,
-                           String email,
-                           String picture) {
-        this.attributes = attributes;
-        this.nameAttributeKey = nameAttributeKey;
-        this.name = name;
-        this.email = email;
-        this.picture = picture;
+    private String id;
+    private Date connected_at;
+    private Properties properties;
+    private KakaoAccount kakao_account;
+
+
+    @Getter
+    public static class Properties {
+        private String nickname;
+        private String profile_image;
+        private String thumbnail_image;
+
     }
 
-    /**OAuth2User 에서 반환하는 사용자 정보는 Map 이기 때문에 값 하나하나를 변환해야 함*/
-    public static OAuthAttributes of(String registrationId,
-                                     String userNameAttributeName,
-                                     Map<String, Object> attributes) {
-        if("naver".equals(registrationId)) {
-            return ofNaver("id", attributes);
+    @Getter
+    public static class KakaoAccount {
+        private boolean profile_nickname_needs_agreement;
+        private boolean profile_image_needs_agreement;
+        private Profile profile; // 수정된 부분
+        private boolean has_email;
+        private boolean email_needs_agreement;
+        @JsonProperty("is_email_valid")
+        private boolean is_email_valid;
+        @JsonProperty("is_email_verified")
+        private boolean is_email_verified;
+        private String email;
+
+        @Getter
+        public static class Profile {
+            private String nickname;
+            private String thumbnail_image_url;
+            private String profile_image_url;
+            @JsonProperty("is_default_image")
+            private boolean is_default_image;
         }
-        return ofGoogle(userNameAttributeName, attributes);
     }
 
-    /** 구글인지 판단하는 생성자 */
-    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
-        return OAuthAttributes.builder()
-                .name((String) attributes.get("name"))
-                .email((String) attributes.get("email"))
-                .picture((String) attributes.get("picture"))
-                .attributes(attributes)
-                .nameAttributeKey(userNameAttributeName)
-                .build();
+    public String getEmail() {
+        return this.kakao_account.email;
+    }
+    public String getNickname() {
+        return this.properties.nickname;
+    }
+    public String getProfile_image() {
+        return this.properties.profile_image;
     }
 
-    /** 네이버인지 판단하는 생성자 */
-    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
-        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
-
-        return OAuthAttributes.builder()
-                .name((String) response.get("name"))
-                .email((String) response.get("email"))
-                .picture((String) response.get("profile_image"))
-                .attributes(response)
-                .nameAttributeKey(userNameAttributeName)
-                .build();
-    }
-
-    /**처음 가입할 때, OAuthAttributes 에서 User 엔터티 생성*/
+    /**
+     * 처음 가입할 때, OAuthAttributes 에서 User 엔터티 생성
+     */
     public Users toEntity() {
         return Users.builder()
-                .issueDate(new Date(System.currentTimeMillis()))
-                .name(name)
-                .email(email)
-                .picture(picture)
+                .issueDate(connected_at)
+                .userId(id)
+                .nickname(properties.nickname)
+                .email(kakao_account.email)
+                .picture(properties.profile_image)
                 .role(Role.USER)
                 .status(Status.NORMAL)
                 .build();
