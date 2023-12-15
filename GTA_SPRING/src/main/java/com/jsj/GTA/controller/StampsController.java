@@ -80,7 +80,7 @@ public class StampsController {
     @Parameter(name = "stampsId", description = "스탬프 id")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = StampsResponseDto.class)))
     @ApiResponse(responseCode = "404", description = "조회 실패(존재x)", content = @Content(schema = @Schema(implementation = String.class)))
-    @GetMapping("/v3/find/{stampsId}")
+    @GetMapping("/v3/findStamps/{stampsId}")
     public ResponseEntity<?> findById3(@PathVariable Long stampsId) {
         StampsResponseDto dto = stampsService.findById(stampsId);
         if(dto.getId() != null) {
@@ -111,7 +111,7 @@ public class StampsController {
     @Parameter(name = "usersId", description = "사용자 id")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = StampsListResponseDto.class)))
     @ApiResponse(responseCode = "404", description = "조회 실패(존재x)", content = @Content(schema = @Schema(implementation = String.class)))
-    @GetMapping("/v3/find/{usersId}")
+    @GetMapping("/v3/findUsers/{usersId}")
     public ResponseEntity<?> findByUserIdDesc3(@PathVariable Long usersId) {
         List<StampsListResponseDto> dto = stampsService.findByUserIdDesc(usersId);
         if(dto.size() != 0) {
@@ -140,7 +140,7 @@ public class StampsController {
     @Parameter(name = "touristAttractionsId", description = "관광지 id")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = StampsListResponseDto.class)))
     @ApiResponse(responseCode = "404", description = "조회 실패(존재x)", content = @Content(schema = @Schema(implementation = String.class)))
-    @GetMapping("/v3/find/{touristAttractionsId}")
+    @GetMapping("/v3/findTouristAttractions/{touristAttractionsId}")
     public ResponseEntity<?> findByTouristAttractionsIdDesc3(@PathVariable String touristAttractionsId) {
         List<StampsListResponseDto> dto = stampsService.findByTouristAttractionsIdDesc(touristAttractionsId);
         if(dto.size() != 0) {

@@ -48,12 +48,13 @@ public class TouristAttractionsController {
     @Operation(summary = "관광지 한 곳 조회", description = "관광지 한 곳의 id를 받고 관광지 id에 해당하는 관광지 조회")
     @Parameter(name = "touristAttractionsId", description = "관광지 id")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsResponseRedisDto.class)))
-    @GetMapping("/v3/find/{touristAttractionsId}")
+    @GetMapping("/v3/findTouristAttractions/{touristAttractionsId}")
     public TouristAttractionsResponseRedisDto findByIdWithGeo(@PathVariable String touristAttractionsId) throws IOException {
         TouristAttractionsResponseRedisDto dto = touristAttractionsService.findByIdWithRedis(touristAttractionsId);
-        geospatialService.save(dto.getId(), dto.getLat(), dto.getLng());
+//        geospatialService.save(dto.getId(), dto.getLat(), dto.getLng());
         return dto;
     }
+
     /**
      * 전체 관광지 조회 -> v3
      *
@@ -96,11 +97,10 @@ public class TouristAttractionsController {
     @Operation(summary = "스탬프 하나에 대응되는 관광지 조회", description = "스탬프 하나의 id를 받고 스탬프를 발급한 관광지 조회")
     @Parameter(name = "stampsId", description = "스탬프 id")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsResponseRedisDto.class)))
-    @GetMapping("/v3/find/{stampsId}")
+    @GetMapping("/v3/findStamps/{stampsId}")
     public TouristAttractionsResponseRedisDto findByStampsIdWithRedis2(@PathVariable Long stampsId) throws IOException {
         return touristAttractionsService.findByStampsIdWithRedis(stampsId);
     }
-
 
     /**
      * user1명이 가지고 있는 스탬프 전체의 관광지 조회 -> v3
@@ -118,11 +118,10 @@ public class TouristAttractionsController {
     @Operation(summary = "사용자가 보유한 스탬프들에 대응되는 관광지 조회", description = "사용자 한 명의 id를 받고 보유한 스탬프 id에 대응되는 관광지 조회")
     @Parameter(name = "usersId", description = "사용자 id")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsResponseRedisDto.class)))
-    @GetMapping("/v3/find/{usersId}")
+    @GetMapping("/v3/findUsers/{usersId}")
     public List<TouristAttractionsResponseRedisDto> findByUserIdDescWithRedis2(@PathVariable Long usersId) throws IOException {
         return touristAttractionsService.findByUserIdDescWithRedis(usersId);
     }
-
 
     /**
      * 주어진 좌표(lat,lng)를 가진 관광지 조회 -> v3
@@ -145,7 +144,6 @@ public class TouristAttractionsController {
     public TouristAttractionsResponseRedisDto findByCoordinateWithRedis2(@PathVariable double lat, @PathVariable double lng) throws IOException {
         return touristAttractionsService.findByCoordinateWithRedis(lat, lng);
     }
-
 
     /**
      * 주어진 좌표(lat,lng)로부터 가까운 count 개의 관광지 조회 -> v3
