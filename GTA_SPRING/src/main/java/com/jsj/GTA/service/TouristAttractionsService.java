@@ -1,7 +1,11 @@
-package com.jsj.GTA.api.touristAttractions;
+package com.jsj.GTA.service;
 
-import com.jsj.GTA.api.touristAttractions.redis.TouristAttractionsRedisRepository;
-import com.jsj.GTA.api.touristAttractions.redis.TouristAttractionsResponseRedisDto;
+import com.jsj.GTA.domain.touristAttractions.TouristAttractions;
+import com.jsj.GTA.domain.touristAttractions.TouristAttractionsListResponseDto;
+import com.jsj.GTA.domain.touristAttractions.TouristAttractionsRepository;
+import com.jsj.GTA.domain.touristAttractions.TouristAttractionsResponseDto;
+import com.jsj.GTA.domain.touristAttractions.redis.TouristAttractionsRedisRepository;
+import com.jsj.GTA.domain.touristAttractions.redis.TouristAttractionsResponseRedisDto;
 import com.jsj.GTA.domain.stamps.*;
 import com.jsj.GTA.util.Coordinate;
 import lombok.RequiredArgsConstructor;

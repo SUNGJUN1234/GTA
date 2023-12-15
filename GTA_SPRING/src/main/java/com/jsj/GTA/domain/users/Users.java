@@ -1,13 +1,10 @@
 package com.jsj.GTA.domain.users;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jsj.GTA.config.auth.Platform;
-import com.jsj.GTA.config.jwt.entity.RefreshToken;
+import com.jsj.GTA.domain.oauth.Platform;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

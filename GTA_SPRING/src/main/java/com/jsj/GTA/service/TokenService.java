@@ -1,16 +1,12 @@
 package com.jsj.GTA.service;
 
-import com.jsj.GTA.api.touristAttractions.TouristAttractionsService;
-import com.jsj.GTA.config.auth.SecurityUtil;
 import com.jsj.GTA.config.jwt.JwtTokenProvider;
-import com.jsj.GTA.config.jwt.RefreshTokenRepository;
-import com.jsj.GTA.config.jwt.TokenDto;
-import com.jsj.GTA.config.jwt.entity.RefreshToken;
+import com.jsj.GTA.domain.jwt.RefreshTokenRepository;
+import com.jsj.GTA.domain.jwt.TokenDto;
+import com.jsj.GTA.domain.jwt.RefreshToken;
 import com.jsj.GTA.domain.users.Users;
 import com.jsj.GTA.domain.users.UsersDto;
 import com.jsj.GTA.domain.users.UsersRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

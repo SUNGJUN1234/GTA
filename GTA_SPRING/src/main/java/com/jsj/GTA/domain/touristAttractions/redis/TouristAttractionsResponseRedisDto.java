@@ -1,6 +1,6 @@
-package com.jsj.GTA.api.touristAttractions.redis;
+package com.jsj.GTA.domain.touristAttractions.redis;
 
-import com.jsj.GTA.api.touristAttractions.TouristAttractionsResponseDto;
+import com.jsj.GTA.domain.touristAttractions.TouristAttractionsResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.data.annotation.Id;

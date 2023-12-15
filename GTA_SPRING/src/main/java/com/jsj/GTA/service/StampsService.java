@@ -1,8 +1,5 @@
 package com.jsj.GTA.service;
 
-import com.jsj.GTA.api.touristAttractions.TouristAttractionsRepository;
-import com.jsj.GTA.api.touristAttractions.TouristAttractionsService;
-import com.jsj.GTA.api.touristAttractions.redis.TouristAttractionsRedisRepository;
 import com.jsj.GTA.domain.stamps.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

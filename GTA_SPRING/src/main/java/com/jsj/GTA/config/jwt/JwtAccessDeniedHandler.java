@@ -1,6 +1,6 @@
 package com.jsj.GTA.config.jwt;
 
-import com.jsj.GTA.api.touristAttractions.TouristAttractionsService;
+import com.jsj.GTA.service.TouristAttractionsService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,10 +1,12 @@
 
-package com.jsj.GTA.api.touristAttractions;
+package com.jsj.GTA.controller;
 
-import com.jsj.GTA.api.touristAttractions.redis.GeospatialService;
-import com.jsj.GTA.api.touristAttractions.redis.TouristAttractionsGeoResponseDto;
-import com.jsj.GTA.api.touristAttractions.redis.TouristAttractionsResponseRedisDto;
-import com.jsj.GTA.domain.stamps.StampsResponseDto;
+import com.jsj.GTA.domain.touristAttractions.TouristAttractionsListResponseDto;
+import com.jsj.GTA.domain.touristAttractions.TouristAttractionsResponseDto;
+import com.jsj.GTA.service.TouristAttractionsService;
+import com.jsj.GTA.service.GeospatialService;
+import com.jsj.GTA.domain.touristAttractions.redis.TouristAttractionsGeoResponseDto;
+import com.jsj.GTA.domain.touristAttractions.redis.TouristAttractionsResponseRedisDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

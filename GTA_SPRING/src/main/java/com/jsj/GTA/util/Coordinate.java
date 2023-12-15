@@ -1,7 +1,7 @@
 package com.jsj.GTA.util;
 
-import com.jsj.GTA.api.touristAttractions.TouristAttractionsListResponseDto;
-import com.jsj.GTA.api.touristAttractions.redis.TouristAttractionsResponseRedisDto;
+import com.jsj.GTA.domain.touristAttractions.TouristAttractionsListResponseDto;
+import com.jsj.GTA.domain.touristAttractions.redis.TouristAttractionsResponseRedisDto;
 import lombok.NoArgsConstructor;
 
 import java.util.Comparator;

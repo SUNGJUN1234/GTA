@@ -1,4 +1,4 @@
-package com.jsj.GTA.config.auth.dto;
+package com.jsj.GTA.domain.oauth;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

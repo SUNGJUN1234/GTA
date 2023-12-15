@@ -1,4 +1,4 @@
-package com.jsj.GTA.config.auth;
+package com.jsj.GTA.domain.oauth;
 
 import lombok.RequiredArgsConstructor;
 

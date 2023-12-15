@@ -1,7 +1,6 @@
 package com.jsj.GTA.domain.users;
 
-import com.jsj.GTA.config.auth.Platform;
-import com.jsj.GTA.domain.stamps.Stamps;
+import com.jsj.GTA.domain.oauth.Platform;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

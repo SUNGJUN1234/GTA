@@ -1,8 +1,5 @@
 package com.jsj.GTA.controller;
 
-import com.jsj.GTA.api.touristAttractions.TouristAttractionsService;
-import com.jsj.GTA.api.touristAttractions.redis.TouristAttractionsGeoResponseDto;
-import com.jsj.GTA.api.touristAttractions.redis.TouristAttractionsResponseRedisDto;
 import com.jsj.GTA.domain.stamps.StampsListResponseDto;
 import com.jsj.GTA.domain.stamps.StampsResponseDto;
 import com.jsj.GTA.domain.stamps.StampsSaveRequestDto;

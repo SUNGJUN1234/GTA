@@ -2,8 +2,8 @@ package com.jsj.GTA.dto;
 
 import org.junit.jupiter.api.Test;
 
-import com.jsj.GTA.api.touristAttractions.TouristAttractions;
-import com.jsj.GTA.api.touristAttractions.TouristAttractionsResponseDto;
+import com.jsj.GTA.domain.touristAttractions.TouristAttractions;
+import com.jsj.GTA.domain.touristAttractions.TouristAttractionsResponseDto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

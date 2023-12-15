@@ -1,10 +1,9 @@
-package com.jsj.GTA.config.auth;
+package com.jsj.GTA.util;
 
-import com.jsj.GTA.api.touristAttractions.TouristAttractionsService;
+import com.jsj.GTA.service.TouristAttractionsService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;

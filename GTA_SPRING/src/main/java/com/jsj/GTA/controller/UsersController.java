@@ -1,9 +1,8 @@
 package com.jsj.GTA.controller;
 
-import com.jsj.GTA.api.touristAttractions.TouristAttractionsService;
-import com.jsj.GTA.config.auth.SecurityUtil;
-import com.jsj.GTA.config.jwt.TokenDto;
-import com.jsj.GTA.config.jwt.TokenResponseDto;
+import com.jsj.GTA.service.TouristAttractionsService;
+import com.jsj.GTA.util.SecurityUtil;
+import com.jsj.GTA.domain.jwt.TokenDto;
 import com.jsj.GTA.domain.users.LoginRequestDto;
 import com.jsj.GTA.domain.users.UsersDto;
 import com.jsj.GTA.domain.users.UsersRequestDto;

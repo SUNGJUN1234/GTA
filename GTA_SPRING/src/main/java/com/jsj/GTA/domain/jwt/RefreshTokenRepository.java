@@ -1,6 +1,5 @@
-package com.jsj.GTA.config.jwt;
+package com.jsj.GTA.domain.jwt;
 
-import com.jsj.GTA.config.jwt.entity.RefreshToken;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

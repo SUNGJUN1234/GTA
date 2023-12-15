@@ -2,23 +2,17 @@ package com.jsj.GTA.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jsj.GTA.api.touristAttractions.TouristAttractionsService;
-import com.jsj.GTA.config.auth.Platform;
-import com.jsj.GTA.config.auth.dto.OAuthAttributes;
+import com.jsj.GTA.domain.oauth.OAuthAttributes;
 import com.jsj.GTA.domain.users.Users;
 import com.jsj.GTA.domain.users.UsersDto;
 import com.jsj.GTA.domain.users.UsersRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.*;
 import java.net.HttpURLConnection;

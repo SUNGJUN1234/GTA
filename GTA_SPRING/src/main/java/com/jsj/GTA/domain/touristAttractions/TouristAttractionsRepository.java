@@ -1,4 +1,4 @@
-package com.jsj.GTA.api.touristAttractions;
+package com.jsj.GTA.domain.touristAttractions;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;

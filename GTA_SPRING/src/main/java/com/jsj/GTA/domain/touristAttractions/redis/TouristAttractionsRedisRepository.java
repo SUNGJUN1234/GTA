@@ -1,4 +1,4 @@
-package com.jsj.GTA.api.touristAttractions.redis;
+package com.jsj.GTA.domain.touristAttractions.redis;
 
 import org.springframework.data.repository.CrudRepository;
 

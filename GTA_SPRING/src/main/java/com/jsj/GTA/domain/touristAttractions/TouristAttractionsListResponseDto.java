@@ -1,15 +1,13 @@
-package com.jsj.GTA.api.touristAttractions;
+package com.jsj.GTA.domain.touristAttractions;
 
-import com.jsj.GTA.util.Crawler;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
-import java.io.IOException;
 import java.util.List;
 
-@Schema(description = "이미지를 크롤링하는 관광지")
+@Schema(description = "api로부터 다수의 관광지 정보를 리스트 형태로 반환하기 위한 가공을 한 형태")
 @Getter
-public class TouristAttractionsResponseDto {
+public class TouristAttractionsListResponseDto {
     @Schema(description = "관광지 id")
     private String id;
     @Schema(description = "관광지명")
@@ -37,7 +35,8 @@ public class TouristAttractionsResponseDto {
     @Schema(description = "이미지url 리스트")
     private List<String> images;
 
-    public TouristAttractionsResponseDto(TouristAttractions entity) throws IOException {
+
+    public TouristAttractionsListResponseDto(TouristAttractions entity){
         this.id = entity.getId();
         this.tourDestNm = entity.getTourDestNm();
         this.addrRoad = entity.getAddrRoad();
@@ -49,6 +48,9 @@ public class TouristAttractionsResponseDto {
         this.tourDestIntro = entity.getTourDestIntro();
         this.mngAgcTel = entity.getMngAgcTel();
         this.mngAgcNm = entity.getMngAgcNm();
-        this.images = Crawler.getImages(entity.getTourDestNm());
+//        try {
+//            this.images = Crawler.getImages(entity.getTourDestNm());
+//        } catch (Exception e) {
+//        }
     }
 }

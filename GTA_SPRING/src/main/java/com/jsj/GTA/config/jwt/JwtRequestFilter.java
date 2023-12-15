@@ -1,7 +1,8 @@
 package com.jsj.GTA.config.jwt;
 
-import com.jsj.GTA.api.touristAttractions.TouristAttractionsService;
-import com.jsj.GTA.config.auth.SecurityUtil;
+import com.jsj.GTA.domain.jwt.TokenDto;
+import com.jsj.GTA.service.TouristAttractionsService;
+import com.jsj.GTA.util.SecurityUtil;
 import com.jsj.GTA.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

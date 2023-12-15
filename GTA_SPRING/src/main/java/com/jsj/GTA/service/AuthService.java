@@ -1,6 +1,5 @@
 package com.jsj.GTA.service;
 
-import com.jsj.GTA.api.touristAttractions.TouristAttractionsService;
 import com.jsj.GTA.domain.users.LoginRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

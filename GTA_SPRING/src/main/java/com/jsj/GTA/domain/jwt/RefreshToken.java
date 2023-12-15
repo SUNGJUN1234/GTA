@@ -1,6 +1,5 @@
-package com.jsj.GTA.config.jwt.entity;
+package com.jsj.GTA.domain.jwt;
 
-import com.jsj.GTA.domain.users.Users;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
