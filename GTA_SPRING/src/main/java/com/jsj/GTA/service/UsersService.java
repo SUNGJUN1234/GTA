@@ -51,8 +51,8 @@ public class UsersService implements UserDetailsService {
         return new UsersDto(entity);
     }
 
-    public UsersDto findByNickname(String nickname) {
-        Users entity = usersRepository.findByNickname(nickname).orElseThrow(() -> new RuntimeException("해당 name을 가진 사용자가 존재하지 않습니다."));
+    public UsersDto findByUserId(String userId) {
+        Users entity = usersRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("해당 id를 가진 사용자가 존재하지 않습니다."));
         return new UsersDto(entity);
     }
 
