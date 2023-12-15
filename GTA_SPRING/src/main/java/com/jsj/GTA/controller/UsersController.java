@@ -64,28 +64,10 @@ public class UsersController {
                 .header("Authorization", "Bearer " + tokenDto.getAccessToken()).build();
     }
 
-    @Operation(summary = "로그아웃")
-    @PostMapping("/logout")
-    public ResponseEntity<String> memberLogout() {
-
-        ResponseCookie responseCookie = ResponseCookie
-                .from("refresh_token", "")
-                .httpOnly(true)
-                .secure(true)
-                .sameSite("None")
-                .maxAge(0) // 쿠키 만료
-                .path("/")
-                .build();
-
-        return ResponseEntity.ok()
-                .header("Set-Cookie", responseCookie.toString())
-                .body("로그아웃이 성공적으로 처리되었습니다.");
-    }
-
     @Operation(summary = "회원정보 호출")
     @GetMapping("/getUsersData")
     public ResponseEntity<UsersDto> loadUsersData() {
-        return ResponseEntity.ok(usersService.findByNickname(SecurityUtil.getCurrentUsername()));
+        return ResponseEntity.ok(usersService.findByUserId(SecurityUtil.getCurrentUsername()));
     }
 
 }
