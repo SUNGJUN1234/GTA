@@ -1,0 +1,102 @@
+package com.jsj.GTA.service;
+
+import com.jsj.GTA.domain.jwt.TokenDto;
+import com.jsj.GTA.domain.users.*;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.Optional;
+
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class UsersService implements UserDetailsService {
+
+    private final UsersRepository usersRepository;
+    private final TokenService tokenService;
+    private final AuthService authService;
+
+    private final Logger LOGGER = LoggerFactory.getLogger(TouristAttractionsService.class);
+
+
+    @Override
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        return usersRepository.findByUserId(userId)
+                .map(this::createUserDetails)
+                .orElseThrow(() -> new UsernameNotFoundException("userId: " + userId + "를 데이터베이스에서 찾을 수 없습니다."));
+    }
+
+    private UserDetails createUserDetails(Users users) {
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(users.getRole().getKey());
+
+        return new User(
+                users.getUserId(),
+                users.getPassword(),
+                Collections.singleton(grantedAuthority)
+        );
+    }
+
+    public UsersDto findMemberByEmail(String email) {
+        Users entity = usersRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("해당 email을 가진 사용자가 존재하지 않습니다."));
+        return new UsersDto(entity);
+    }
+
+    public UsersDto findByNickname(String nickname) {
+        Users entity = usersRepository.findByNickname(nickname).orElseThrow(() -> new RuntimeException("해당 name을 가진 사용자가 존재하지 않습니다."));
+        return new UsersDto(entity);
+    }
+
+    @Transactional
+    public Long saveUsers(UsersDto requestDto) {
+        return usersRepository.save(requestDto.toEntity()).getId();
+    }
+
+    /**
+     * UsernamePasswordAuthenticationToken을 통한 Spring Security인증 진행
+     * 이후 tokenService에 userId값을 전달하여 토큰 생성
+     * @param requestDto
+     * @return TokenDTO
+     */
+    @Transactional
+    public TokenDto login(LoginRequestDto requestDto) {
+        LOGGER.info("UsersService[login] requestDto data: {}", requestDto);
+        authService.authenticateLogin(requestDto);
+
+        Users users = usersRepository.findByUserId(requestDto.getUserId()).get();
+        LOGGER.info("UsersService[login] findByUserId data userId: {}", users.getUserId());
+        TokenDto tokenDto = tokenService.createToken(users);
+        LOGGER.info("UsersService[login] tokenDto TokenType: {} AccessToken: {} RefreshToken: {} Duration: {}",
+                tokenDto.getTokenType(),
+                tokenDto.getAccessToken(),
+                tokenDto.getRefreshToken(),
+                tokenDto.getDuration());
+        return tokenDto;
+    }
+
+    @Transactional
+    public void signup(UsersRequestDto requestDto) {
+        LOGGER.info("UsersService[signup] requestDTO data: {}", requestDto);
+        Optional<Users> entity = usersRepository.findByUserId(requestDto.getUserId());
+        if(entity.isPresent()) {
+            LOGGER.info("UsersService[signup] already exist data, entity: {}", entity.get().getUserId());
+            throw new RuntimeException("이미 존재하는 아이디입니다.");
+        } else {
+            Users users = requestDto.toEntity(requestDto);
+            LOGGER.info("UsersService[signup] new users data: {}", users.getUserId());
+            usersRepository.save(users);
+        }
+//        users.updateRole(Role.USER);
+//        usersRepository.save(users);
+    }
+
+}

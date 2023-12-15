@@ -1,7 +1,7 @@
 package com.jsj.GTA.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jsj.GTA.api.touristAttractions.TourDestBaseInfo;
+import com.jsj.GTA.domain.touristAttractions.TourDestBaseInfo;
 import lombok.NoArgsConstructor;
 
 import java.io.BufferedReader;
