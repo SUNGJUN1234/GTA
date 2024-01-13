@@ -27,7 +27,7 @@ public class JwtTokenProvider {
     private final Key encodedKey;
     private static final String BEARER_TYPE = "Bearer";
     private static final Long accessTokenValidationTime = 24 * 60 * 60 * 1000L;
-    private static final Long refreshTokenValidationTime = 7 * 24 * 60 * 60 * 1000L;
+    private static final Long refreshTokenValidationTime = 365 * 2 * 24 * 60 * 60 * 1000L;
 
     private final Logger LOGGER = LoggerFactory.getLogger(TouristAttractionsService.class);
 
