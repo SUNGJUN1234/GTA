@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAppContext } from '../global/AppContext';
 import axios from 'axios'
+import { createAxiosInstance } from '../global/AxiosInstance';
 
 // 컴포넌트 import
 import LoginHub from './LoginHub'; 
@@ -49,27 +50,6 @@ function ProfileScreen() {
   );
 }
 
-async function stamping(now) {
-  try{
-    const data = {
-      touristAttractionsId : now[0]['touristAttractionsResponseRedisDto'].id,
-      usersId : 1,
-      name : now[0]['touristAttractionsResponseRedisDto'].tourDestNm+' 스탬프',
-      issueDate : null,
-      expirationDate : null,
-    }
-    await axios.post(
-      awsServer.url + `/api/stamps/v3/save`,
-      data,
-    ).then((res) => {
-      console.log("스탬프 성공!");
-    })
-
-  }catch(e) {
-    console.error(e);
-  }
-}
-
 export default function App() {
   const { position, setPosition , userInfo , setUserInfo , now , setNow } = useAppContext(); // 전역 변수
   const [loading , setLoading] = useState(true);
@@ -79,6 +59,29 @@ export default function App() {
   useEffect(()=>{
     setLoading(false);
   },[]);
+
+  const stamping = async () => {
+    try {
+      const axiosInstance = createAxiosInstance(userInfo.accessToken, userInfo.refreshToken);
+
+      const data = {
+        touristAttractionsId: now[0]['touristAttractionsResponseRedisDto'].id,
+        usersId: 1,
+        name: now[0]['touristAttractionsResponseRedisDto'].tourDestNm + ' 스탬프',
+        issueDate: null,
+        expirationDate: null,
+      };
+
+      await axiosInstance.post(
+        awsServer.url + `/api/stamps/v3/save`,
+        data,
+      ).then((res) => {
+        console.log("스탬프 성공!");
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   if (loading) {
     return;

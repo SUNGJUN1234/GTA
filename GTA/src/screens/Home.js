@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, Text, Image, Dimensions, ScrollView, } from 'react-native';
 import { theme } from '../global/colors';
 import Swiper from 'react-native-swiper';
-import axios from 'axios';
 import { awsServer } from '../server';
 import { useAppContext } from '../global/AppContext';
 import NearCard from '../components/NearCard';
@@ -36,7 +35,7 @@ const Home = () => {
       setNow(nearResponse.data);
       setNearDataArr(nearResponse.data);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     } finally {
       setLoading(false);
     }
