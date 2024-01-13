@@ -60,7 +60,7 @@ public class UsersController {
                 .build();
 
         return ResponseEntity.ok()
-                .header("Cookie", responseCookie.toString())
+                .header("Set-Cookie", responseCookie.toString())
                 .header("Authorization", "Bearer " + tokenDto.getAccessToken()).build();
     }
 
