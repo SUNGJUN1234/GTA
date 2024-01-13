@@ -1,5 +1,7 @@
 package com.jsj.GTA.domain.touristAttractions.redis;
 
+import com.jsj.GTA.domain.touristAttractions.TouristAttractionsImageUrl;
+import com.jsj.GTA.domain.touristAttractions.TouristAttractionsMariaDB;
 import com.jsj.GTA.domain.touristAttractions.TouristAttractionsResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -10,6 +12,7 @@ import org.springframework.data.redis.core.index.Indexed;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 import java.util.List;
+import java.util.Optional;
 
 @Schema(description = "이미지url을 가지고 있는 캐시 스토리지 형태의 관광지")
 @Getter
@@ -65,6 +68,24 @@ public class TouristAttractionsResponseRedisDto {
                 entity.getMngAgcTel(),
                 entity.getMngAgcNm(),
                 entity.getImages());
+        return dto;
+    }
+
+    public static TouristAttractionsResponseRedisDto dbToRedis(TouristAttractionsMariaDB dbEntity, List<String> images) {
+        TouristAttractionsResponseRedisDto dto = new TouristAttractionsResponseRedisDto(
+                dbEntity.getId(),
+                dbEntity.getTourDestNm(),
+                dbEntity.getOperationRuleNm(),
+                dbEntity.getAddrRoad(),
+                dbEntity.getAddrJibun(),
+                Double.parseDouble(dbEntity.getLat()),
+                Double.parseDouble(dbEntity.getLng()),
+                dbEntity.getArea(),
+                dbEntity.getPublicConvFcltInfo(),
+                dbEntity.getTourDestIntro(),
+                dbEntity.getMngAgcTel(),
+                dbEntity.getMngAgcNm(),
+                images);
         return dto;
     }
 }

@@ -1,9 +1,6 @@
 package com.jsj.GTA.service;
 
-import com.jsj.GTA.domain.touristAttractions.TouristAttractions;
-import com.jsj.GTA.domain.touristAttractions.TouristAttractionsListResponseDto;
-import com.jsj.GTA.domain.touristAttractions.TouristAttractionsRepository;
-import com.jsj.GTA.domain.touristAttractions.TouristAttractionsResponseDto;
+import com.jsj.GTA.domain.touristAttractions.*;
 import com.jsj.GTA.domain.touristAttractions.redis.TouristAttractionsRedisRepository;
 import com.jsj.GTA.domain.touristAttractions.redis.TouristAttractionsResponseRedisDto;
 import com.jsj.GTA.domain.stamps.*;
@@ -34,6 +31,11 @@ public class TouristAttractionsService {
     private final StampsRepository stampsRepository;
 
     private final TouristAttractionsRedisRepository touristAttractionsRedisRepository;
+
+    private final TouristAttractionsMariaDBRepository touristAttractionsMariaDBRepository;
+
+    private final TouristAttractionsImageUrlRepository touristAttractionsImageUrlRepository;
+
     private static final ModelMapper modelMapper = new ModelMapper();
 
     /**
@@ -65,14 +67,23 @@ public class TouristAttractionsService {
         }
         // 캐시 데이터가 존재하지 않으면 캐시 데이터 저장
         // 먼저 데이터를 api 에서 가져오고
+        // api 에 존재하지 않으면 db 에서 가져오고
         TouristAttractionsResponseDto entity = findById(id);
-
-        if (entity == null) {
-            LOGGER.info("[findByIdWithRedis] No Data entity");
-            return null;
+        TouristAttractionsResponseRedisDto redisDto;
+        if (entity == null) { // api 가 비어있으면, db 탐색
+            LOGGER.info("[findByIdWithRedis] No Data api entity");
+            Optional<TouristAttractionsMariaDB> dbEntity = touristAttractionsMariaDBRepository.findById(id);
+            if (dbEntity.isPresent()) { // db 에 있으면
+                LOGGER.info("[findByIdWithRedis] DB Data existed.");
+//                redisDto = TouristAttractionsResponseRedisDto.dbToRedis(dbEntity.get(), );
+            } else { // db 가 비어있으면 (redis, api, db 에 존재 x)
+                LOGGER.info("[findByIdWithRedis] Data dose not existed.");
+                // 빈 객체 반환
+                return new TouristAttractionsResponseRedisDto();
+            }
         }
         // 가져온 데이터가 있으면 redis 에 저장 및 반환
-        TouristAttractionsResponseRedisDto redisDto = TouristAttractionsResponseRedisDto.createDto(entity);
+        redisDto = TouristAttractionsResponseRedisDto.createDto(entity);
         touristAttractionsRedisRepository.save(redisDto);
         return redisDto;
     }
@@ -141,6 +152,7 @@ public class TouristAttractionsService {
         TouristAttractions touristAttractions = touristAttractionsRepository.findByStampsId(stamps.getTouristAttractionsId());
         return new TouristAttractionsResponseDto(touristAttractions);
     }
+
     public TouristAttractionsResponseRedisDto findByStampsIdWithRedis(Long id) throws IOException {
         LOGGER.info("[findByStampsIdWithRedis] request data : {}", id);
         // 스탬프 조회
@@ -168,6 +180,8 @@ public class TouristAttractionsService {
         // 가져온 데이터가 있으면 redis 에 저장 및 반환
         TouristAttractionsResponseRedisDto redisDto = TouristAttractionsResponseRedisDto.createDto(entity);
         touristAttractionsRedisRepository.save(redisDto);
+        // db에 저장
+
         return redisDto;
     }
 
@@ -189,6 +203,7 @@ public class TouristAttractionsService {
                 .map(TouristAttractionsListResponseDto::new)
                 .collect(Collectors.toList());
     }
+
     public List<TouristAttractionsResponseRedisDto> findByUserIdDescWithRedis(Long id) throws IOException {
         // user가 가진 스탬프 전부 구하기
         List<Stamps> stamps = stampsRepository.findByUserIdDesc(id);
@@ -221,6 +236,7 @@ public class TouristAttractionsService {
         }
         return result;
     }
+
     /**
      * 주어진 좌표를 가진 관광지 조회
      *
@@ -231,9 +247,10 @@ public class TouristAttractionsService {
         touristAttractions = touristAttractionsRepository.findByCoordinate(lat, lng);
         return new TouristAttractionsResponseDto(touristAttractions);
     }
+
     public TouristAttractionsResponseRedisDto findByCoordinateWithRedis(double lat, double lng) throws IOException {
         LOGGER.info("[findByCoordinateWithRedis] request data lat : {} lng : {}", lat, lng);
-        Optional<TouristAttractionsResponseRedisDto> cache = touristAttractionsRedisRepository.findByLatAndLng(""+lat, ""+lng);
+        Optional<TouristAttractionsResponseRedisDto> cache = touristAttractionsRedisRepository.findByLatAndLng("" + lat, "" + lng);
         // 캐시 데이터가 존재하면 캐시 데이터 반환
         if (cache.isPresent()) {
             LOGGER.info("[findByCoordinateWithRedis] Cache Data existed.");
@@ -254,6 +271,7 @@ public class TouristAttractionsService {
         touristAttractionsRedisRepository.save(redisDto);
         return redisDto;
     }
+
     /**
      * 주어진 좌표로부터 가까운 count 의 관광지 조회
      *
@@ -269,6 +287,7 @@ public class TouristAttractionsService {
         // 좌표를 비교하는 알고리즘 사용하여 값을 반환
         return Coordinate.findClosestCoordinates(responseList, count, lat, lng);
     }
+
     public List<TouristAttractionsResponseRedisDto> findByNearCoordinateWithRedis(int count, double lat, double lng) throws IOException {
         LOGGER.info("[findByNearCoordinateWithRedis] request data");
         // 전체 관광지 조회,
@@ -284,7 +303,7 @@ public class TouristAttractionsService {
         // 좌표를 비교하는 알고리즘 사용하여 값을 반환
         List<TouristAttractionsListResponseDto> coordinateResult = Coordinate.findClosestCoordinates(entity, count, lat, lng);
         // 반환한 값을 토대로 새로운 리스트 생성 및 반환
-        if(coordinateResult.isEmpty()) {
+        if (coordinateResult.isEmpty()) {
             LOGGER.info("[findByNearCoordinateWithRedis] No Data coordinateResult");
             return null;
         }
