@@ -18,7 +18,10 @@ const NearCard = ({data}) => {
           style={styles.cardImg}
           ></Image>
           :
-          <Text>이미지 없어</Text>
+          <Image
+          source={{uri: require('../../assets/no_img.png')}}
+          style={styles.cardImg}
+          ></Image>
           }
         </View>
         <View style={styles.detailView}>
