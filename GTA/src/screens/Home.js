@@ -29,15 +29,10 @@ const Home = () => {
     try {
       // const allReponse = await axios.get(awsServer.url + "/api/v1/touristAttractions");
       // setAllTaArr(allReponse.data);
-      const nearResponse = await axios.get(awsServer.url + `/api/v1/touristAttractions/coordinate/near/4/${position.lat}/${position.lng}`);
+      const nearResponse = await axios.get(awsServer.url + `/api/touristAttractions/v3/find/near/4/${position.lat}/${position.lng}`);
       console.log(nearResponse.data[0]);
       setNow(nearResponse.data);
-
-      const updatedNearDataArr = nearResponse.data.map((item) => ({ 
-        ...item, 
-        distance: parseInt((Math.sqrt(Math.pow((Math.abs(item.lat) - Math.abs(position.lat)), 2) + Math.pow(Math.abs(item.lng) - Math.abs(position.lng), 2)))*111000)
-      }));
-      setNearDataArr(updatedNearDataArr);
+      setNearDataArr(nearResponse.data);
 
     } catch (e) {
       console.log(e);
@@ -92,13 +87,13 @@ const Home = () => {
 
       <View style={styles.infoView}>
         <Image source={require('../../assets/line1.png')} style={styles.lineImg} />
-        <Text style={styles.infoText}>{now[0].tourDestIntro}</Text>
+        <Text style={styles.infoText}>{now[0]['touristAttractionsResponseRedisDto'].tourDestIntro}</Text>
         <Image source={require('../../assets/line1.png')} style={styles.lineImg} />
       </View>
 
       <Text style={styles.nearText}>가까운 관광지 TOP 3</Text>
           {nearDataArr.map((item, idx) => (
-            <NearCard key={idx} data={item} />
+            idx !== 0 ? <NearCard key={idx} data={item} /> : null 
           ))}
       </ScrollView>
 

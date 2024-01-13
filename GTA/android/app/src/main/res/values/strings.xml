@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GTA</string>
+    <string name="kakao_app_key">9a4738e8ea8e748d70d8061cab6db281</string>
 </resources>

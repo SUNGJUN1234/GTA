@@ -7,7 +7,7 @@ import { theme } from '../global/colors';
 const Map = () => {
   const { position, setPosition , userInfo , setUserInfo , now , setNow } = useAppContext(); // 전역 변수
 
-  if(now.length === 0 ){
+  if(!now){
     return;
   }
 
@@ -27,11 +27,11 @@ const Map = () => {
       <Marker 
         key={idx}
         coordinate={{
-          latitude: parseFloat(item.lat),
-          longitude: parseFloat(item.lng),
+          latitude: parseFloat(item['touristAttractionsResponseRedisDto'].lat),
+          longitude: parseFloat(item['touristAttractionsResponseRedisDto'].lng),
         }}
-        title={item.tourDestNm}
-        description={item.addrRoad?item.addrRoad:item.addrJibun}
+        title={item['touristAttractionsResponseRedisDto'].tourDestNm}
+        description={item['touristAttractionsResponseRedisDto'].addrRoad?item['touristAttractionsResponseRedisDto'].addrRoad:item['touristAttractionsResponseRedisDto'].addrJibun}
         pinColor={theme.color1}
      />
     ))}

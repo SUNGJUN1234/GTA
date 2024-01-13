@@ -52,14 +52,14 @@ function ProfileScreen() {
 async function stamping(now) {
   try{
     const data = {
-      touristAttractionsId : now[0].id,
+      touristAttractionsId : now[0]['touristAttractionsResponseRedisDto'].id,
       usersId : 1,
-      name : now[0].tourDestNm+' 스탬프',
+      name : now[0]['touristAttractionsResponseRedisDto'].tourDestNm+' 스탬프',
       issueDate : null,
       expirationDate : null,
     }
     await axios.post(
-      awsServer.url + `/api/v1/stamps`,
+      awsServer.url + `/api/v3/stamps`,
       data,
     ).then((res) => {
       console.log("스탬프 성공!");
@@ -90,7 +90,7 @@ export default function App() {
       screenOptions={({ route }) => ({
       headerTitle: () => (
         <View>
-          <Text style={styles.titleText}>현재위치 : {now[0]?.tourDestNm ??'...검색중...' }</Text>
+          <Text style={styles.titleText}>현재위치 : {!now[0] ?'...검색중...' : now[0]['touristAttractionsResponseRedisDto'].tourDestNm }</Text>
         </View>
       ),
       headerRight: () => {

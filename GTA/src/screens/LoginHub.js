@@ -1,72 +1,121 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Linking, } from 'react-native';
-import { WebView } from 'react-native-webview';
-import axios from 'axios';
-import { awsServer } from '../server';
-import { useAppContext } from '../global/AppContext';
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import {
+  login,
+  logout,
+  getProfile as getKakaoProfile,
+  shippingAddresses as getKakaoShippingAddresses,
+  unlink,
+} from "@react-native-seoul/kakao-login";
 
-const LoginHub = ({ navigation }) => {
+const LoginHub = ({navigation, route}) => {
+  const [result, setResult] = useState("");
 
-  const { position, setPosition , userInfo , setUserInfo , now , setNow } = useAppContext(); // 전역 변수
-  const url = awsServer.url+'/api/v1/touristAttractions';
-
-  const requestUserInfo = async () => {
-    console.log("동작");
-    const userInfoResponse = await axios.get(awsServer.url + "/logout");
-    const response = userInfoResponse.request._response;
-    console.log(response);
-
-    if (typeof response === 'string') {
-        try {
-          console.log("가자!");
-          setUserInfo(JSON.parse(response));
-          console.log(response);
-          navigation.navigate('HomeScreen')
-        } catch (error) {
-          setUserInfo(null);
-          console.log("userInfo != null");
-        }
-      } else {
-        // 변수가 문자열이 아님
-        console.log("userInfo != string");
-      }
-
-  }
-
-  const getCode = async (target) => {
-    console.log("dd");
+  const signInWithKakao = async () => {
     try {
-      console.log(target);
-    } catch (e) {
-      console.log(e);
+      const token = await login();
+      setResult(JSON.stringify(token));
+      console.log(JSON.stringify(token));
+      navigation.navigate('HomeScreen');
+    } catch (err) {
+      console.error("login err", err);
     }
-  }
+  };
 
+  const signOutWithKakao = async () => {
+    try {
+      const message = await logout();
+      setResult(message);
+    } catch (err) {
+      console.error("signOut error", err);
+    }
+  };
 
-  useEffect(()=> {
-    requestUserInfo();
-  },[])
+  const getProfile = async () => {
+    try {
+      const profile = await getKakaoProfile();
+      setResult(JSON.stringify(profile));
+
+    } catch (err) {
+      console.error("signOut error", err);
+    }
+  };
+
+  const getShippingAddresses = async () => {
+    try {
+      const shippingAddresses = await getKakaoShippingAddresses();
+      setResult(JSON.stringify(shippingAddresses));
+    } catch (err) {
+      console.error("signOut error", err);
+    }
+  };
+
+  const unlinkKakao = async () => {
+    try {
+      const message = await unlink();
+      setResult(message);
+    } catch (err) {
+      console.error("signOut error", err);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <WebView
-        style={{ flex: 1 }}
-        source={{ uri: url }}
-        javaScriptEnabled
-        onMessage={(event) => {
-          getCode(event.nativeEvent.data);
+      <View style={styles.resultContainer}>
+        <ScrollView>
+          <Text>{result}</Text>
+          <View style={{ height: 100 }} />
+        </ScrollView>
+      </View>
+      <Pressable
+        style={styles.button}
+        onPress={() => {
+          signInWithKakao();
         }}
-        originWhitelist={['*']} // Allow the WebView to post messages
-      />
+      >
+        <Text style={styles.text}>카카오 로그인</Text>
+      </Pressable>
+      <Pressable style={styles.button} onPress={() => getProfile()}>
+        <Text style={styles.text}>프로필 조회</Text>
+      </Pressable>
+      <Pressable style={styles.button} onPress={() => getShippingAddresses()}>
+        <Text style={styles.text}>배송주소록 조회</Text>
+      </Pressable>
+      <Pressable style={styles.button} onPress={() => unlinkKakao()}>
+        <Text style={styles.text}>링크 해제</Text>
+      </Pressable>
+      <Pressable style={styles.button} onPress={() => signOutWithKakao()}>
+        <Text style={styles.text}>카카오 로그아웃</Text>
+      </Pressable>
     </View>
   );
 };
 
+export default LoginHub;
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'white',
+    height: "100%",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    paddingBottom: 100,
+  },
+  resultContainer: {
+    flexDirection: "column",
+    width: "100%",
+    padding: 24,
+  },
+  button: {
+    backgroundColor: "#FEE500",
+    borderRadius: 40,
+    borderWidth: 1,
+    width: 250,
+    height: 40,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginTop: 10,
+  },
+  text: {
+    textAlign: "center",
   },
 });
-
-export default LoginHub;

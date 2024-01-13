@@ -5,23 +5,37 @@ import { theme } from '../global/colors';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const NearCard = ({data}) => {
+  const dtoData = data['touristAttractionsResponseRedisDto'];
+  console.log(dtoData.images);
+
   return (
     <View style={styles.nearCardTopView}>
       <Image source={require('../../assets/line2.png')} style={styles.lineImg} />
       <View style={styles.upView}>
         <View style={styles.imgView}>
-          <Image source={data.imgUrl ? data.imgUrl : require('../../assets/test2.png') } style={styles.cardImg}/>
+          {dtoData.images !== null ? 
+          <Image
+          source={{uri: dtoData.images[0]}}
+          style={styles.cardImg}
+          ></Image>
+          :
+          <Text>없어</Text>
+          // <Image
+          // source= {require('../../assets/test2.png') }
+          // style={styles.cardImg}
+          // ></Image>
+          }
         </View>
         <View style={styles.detailView}>
-          <Text style={styles.nameText}>{data.tourDestNm}</Text>
-          <Text>거리 : {data.distance}m</Text>
-          <Text>시설 : {data.publicConvFcltInfo}</Text>
-          <Text>주소 : {data.addrJibun? data.addrJibun:data.addrRoad}</Text>
+          <Text style={styles.nameText}>{dtoData.tourDestNm}</Text>
+          <Text>거리 : {data['distance'].value * 1000}m</Text>
+          <Text>시설 : {dtoData.publicConvFcltInfo}</Text>
+          <Text>주소 : {dtoData.addrJibun? dtoData.addrJibun:dtoData.addrRoad}</Text>
         </View>
       </View>
       <View style={styles.downView}>
         <View style={styles.infoView}>
-          <Text>{data.info}</Text>
+          <Text>{dtoData.tourDestIntro}</Text>
         </View>
       </View>
 
