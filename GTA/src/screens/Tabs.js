@@ -59,7 +59,7 @@ async function stamping(now) {
       expirationDate : null,
     }
     await axios.post(
-      awsServer.url + `/api/v3/stamps`,
+      awsServer.url + `/api/stamps/v3/save`,
       data,
     ).then((res) => {
       console.log("스탬프 성공!");
@@ -86,7 +86,7 @@ export default function App() {
   
   return (
     <Tab.Navigator
-      initialRouteName={userInfo !== null ? 'LoginScreen': 'HomeScreen'}
+      initialRouteName={userInfo === null ? 'LoginScreen': 'HomeScreen'}
       screenOptions={({ route }) => ({
       headerTitle: () => (
         <View>

@@ -7,15 +7,37 @@ import {
   shippingAddresses as getKakaoShippingAddresses,
   unlink,
 } from "@react-native-seoul/kakao-login";
+import { awsServer } from "../server";
+import axios from "axios";
+import { useAppContext } from "../global/AppContext";
+import { setStorageItem, getStorageItem } from "../global/AsyncStorage";
 
 const LoginHub = ({navigation, route}) => {
   const [result, setResult] = useState("");
+  const { position, setPosition , userInfo , setUserInfo , now , setNow } = useAppContext();
 
   const signInWithKakao = async () => {
     try {
       const token = await login();
       setResult(JSON.stringify(token));
-      console.log(JSON.stringify(token));
+      // console.log(JSON.stringify(token));
+      const kakaoAccessToken = JSON.stringify(token.accessToken);
+      const loginResponse = await axios.get(awsServer.url + `/oauth2/kakao?access_token=${kakaoAccessToken}`);
+
+      const requestHeader = loginResponse.request.responseHeaders;
+
+      const refreshToken = requestHeader['Set-Cookie'];
+      const accessToken = loginResponse.data.accessToken;
+      
+      setUserInfo({
+        accessToken: accessToken,
+        refreshToken: refreshToken
+      })
+
+      await setStorageItem('accessToken', accessToken);
+      await setStorageItem('refreshToken', refreshToken);
+
+
       navigation.navigate('HomeScreen');
     } catch (err) {
       console.error("login err", err);

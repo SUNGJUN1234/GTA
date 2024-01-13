@@ -9,23 +9,22 @@ import SplashScreen from 'react-native-splash-screen';
 import axios from 'axios'
 import { NavigationContainer } from '@react-navigation/native';
 import { awsServer } from './src/server';
+import { setStorageItem, getStorageItem } from './src/global/AsyncStorage';
+
 
 export default function App() {
   const navigationRef = useRef(null);
   const { position, setPosition , userInfo , setUserInfo , now , setNow } = useAppContext(); // 전역 변수
 
-  const requestUserInfo = async () => {
-    // try{
-    //   const userInfoResponse = await axios.get(awsServer.url + '/oauth/loginInfo');
-      
-    //   const response = userInfoResponse.request._response;
-    //   setUserInfo(response);
+  const requestUserInfo = async() => {
+    const accessToken = await getStorageItem('accessToken');
+    const refreshToken = await getStorageItem('refreshToken');
 
-    // } catch(e){
-    //   console.log(e);
-    // } finally {
+    setUserInfo({
+      accessToken : accessToken,
+      refreshToken : refreshToken
+    })
 
-    // }
   }
 
   const requestLocationPermission = async () => {
@@ -60,37 +59,22 @@ export default function App() {
     }
   };
 
-  useEffect(() => {
-    try {
-      setTimeout(() => {
-        SplashScreen.hide();
-        requestUserInfo();
-        fetchLocation(); // 스플래시가 활성화 된 후 위치 정보 요청
-      }, 2000); // 스플래시 활성화 시간 2초
-    } catch (e) {
-      console.error('오류 발생:', e.message);
-    }
-  }, []);
+  try {
+    setTimeout(() => {
+      SplashScreen.hide();
+      requestUserInfo();
+      fetchLocation(); // 스플래시가 활성화 된 후 위치 정보 요청
+    }, 2000); // 스플래시 활성화 시간 2초
+  } catch (e) {
+    console.error('오류 발생:', e.message);
+  }
 
   useEffect(() => {
     console.log(userInfo);
-    if (typeof userInfo === 'string') {
-      console.log("스트링");
-        try {
-          setUserInfo(JSON.parse(userInfo));
-          var currentPage = navigationRef.current?.getCurrentRoute()?.name;
-          console.log(currentPage);
-          if(currentPage === "LoginHub"){
-            navigationRef.current?.navigate('HomeScreen');
-          }
-        } catch (error) {
-          setUserInfo(null);
-        }
-      } else {
-        // 변수가 문자열이 아님
-        console.log("스트링X");
-      }
 
+    if(userInfo?.accessToken && currentPage === "LoginHub"){
+        navigationRef.current?.navigate('HomeScreen');
+    }
   }, [userInfo])
 
   return (

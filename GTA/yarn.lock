@@ -1519,10 +1519,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     "fastq" "^1.6.0"
 
-"@react-native-async-storage/async-storage@^1.19.5":
-  "integrity" "sha512-zLT7oNPXpW8BxJyHyq8AJbXtlHE/eonFWuJt44y0WeCGnp4KOJ8mfqD8mtAIKLyrYHHE1uadFe/s4C+diYAi8g=="
-  "resolved" "https://registry.npmjs.org/@react-native-async-storage/async-storage/-/async-storage-1.19.5.tgz"
-  "version" "1.19.5"
+"@react-native-async-storage/async-storage@^1.21.0":
+  "integrity" "sha512-JL0w36KuFHFCvnbOXRekqVAUplmOyT/OuCQkogo6X98MtpSaJOKEAeZnYO8JB0U/RIEixZaGI5px73YbRm/oag=="
+  "resolved" "https://registry.npmjs.org/@react-native-async-storage/async-storage/-/async-storage-1.21.0.tgz"
+  "version" "1.21.0"
   dependencies:
     "merge-options" "^3.0.4"
 
@@ -2321,6 +2321,11 @@
   "integrity" "sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q=="
   "resolved" "https://registry.npmjs.org/asynckit/-/asynckit-0.4.0.tgz"
   "version" "0.4.0"
+
+"AsyncStorage@^0.1.5":
+  "integrity" "sha512-Z5dRGsFXvTUi3TUjGJJlMnU/knY8/qKCy6JGHxgddfiaJhOqgZatCDkALJUEN6ZamJMQ48cePgTdjADZ9At+Uw=="
+  "resolved" "https://registry.npmjs.org/AsyncStorage/-/AsyncStorage-0.1.5.tgz"
+  "version" "0.1.5"
 
 "available-typed-arrays@^1.0.5":
   "integrity" "sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw=="
@@ -5848,7 +5853,7 @@
     "escape-string-regexp" "2.0.0"
     "invariant" "2.2.4"
 
-"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", "react-native@>= 0.50.0", "react-native@>= 0.64.3", "react-native@>=0.57.0", "react-native@>=0.63.3", "react-native@0.72.6":
+"react-native@*", "react-native@^0.0.0-0 || >=0.60 <1.0", "react-native@>= 0.50.0", "react-native@>= 0.64.3", "react-native@>=0.57.0", "react-native@>=0.63.3", "react-native@0.72.6":
   "integrity" "sha512-RafPY2gM7mcrFySS8TL8x+TIO3q7oAlHpzEmC7Im6pmXni6n1AuufGaVh0Narbr1daxstw7yW7T9BKW5dpVc2A=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.72.6.tgz"
   "version" "0.72.6"

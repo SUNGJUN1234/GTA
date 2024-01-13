@@ -27,13 +27,13 @@ const Home = () => {
 
   const loadHome = async () => {
     try {
+
       // const allReponse = await axios.get(awsServer.url + "/api/v1/touristAttractions");
       // setAllTaArr(allReponse.data);
       const nearResponse = await axios.get(awsServer.url + `/api/touristAttractions/v3/find/near/4/${position.lat}/${position.lng}`);
       console.log(nearResponse.data[0]);
       setNow(nearResponse.data);
       setNearDataArr(nearResponse.data);
-
     } catch (e) {
       console.log(e);
     } finally {
