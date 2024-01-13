@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import {
   login,
@@ -89,26 +89,26 @@ const LoginHub = ({navigation, route}) => {
           <View style={{ height: 100 }} />
         </ScrollView>
       </View>
-      <Pressable
+      <TouchableOpacity
         style={styles.button}
         onPress={() => {
           signInWithKakao();
         }}
       >
         <Text style={styles.text}>카카오 로그인</Text>
-      </Pressable>
-      <Pressable style={styles.button} onPress={() => getProfile()}>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => getProfile()}>
         <Text style={styles.text}>프로필 조회</Text>
-      </Pressable>
-      <Pressable style={styles.button} onPress={() => getShippingAddresses()}>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => getShippingAddresses()}>
         <Text style={styles.text}>배송주소록 조회</Text>
-      </Pressable>
-      <Pressable style={styles.button} onPress={() => unlinkKakao()}>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => unlinkKakao()}>
         <Text style={styles.text}>링크 해제</Text>
-      </Pressable>
-      <Pressable style={styles.button} onPress={() => signOutWithKakao()}>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => signOutWithKakao()}>
         <Text style={styles.text}>카카오 로그아웃</Text>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   );
 };

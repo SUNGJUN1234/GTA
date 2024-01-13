@@ -6,6 +6,7 @@ import axios from 'axios';
 import { awsServer } from '../server';
 import { useAppContext } from '../global/AppContext';
 import NearCard from '../components/NearCard';
+import { createAxiosInstance } from '../global/AxiosInstance';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -25,13 +26,13 @@ const Home = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const swiperRef = useRef(null);
 
+
+
   const loadHome = async () => {
     try {
+      const axiosInstance = createAxiosInstance(userInfo.accessToken, userInfo.refreshToken);
 
-      // const allReponse = await axios.get(awsServer.url + "/api/v1/touristAttractions");
-      // setAllTaArr(allReponse.data);
-      const nearResponse = await axios.get(awsServer.url + `/api/touristAttractions/v3/find/near/4/${position.lat}/${position.lng}`);
-      console.log(nearResponse.data[0]);
+      const nearResponse = await axiosInstance.get(awsServer.url + `/api/touristAttractions/v3/find/near/4/${position.lat}/${position.lng}`);
       setNow(nearResponse.data);
       setNearDataArr(nearResponse.data);
     } catch (e) {

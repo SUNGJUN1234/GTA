@@ -25,6 +25,11 @@ export default function App() {
       refreshToken : refreshToken
     })
 
+    const currentPage = navigationRef.current?.getCurrentRoute()?.name;
+
+    if(accessToken && refreshToken && currentPage === "LoginHub"){
+      navigationRef.current?.navigate('HomeScreen');
+  }
   }
 
   const requestLocationPermission = async () => {
@@ -58,24 +63,23 @@ export default function App() {
       );
     }
   };
-
-  try {
-    setTimeout(() => {
-      SplashScreen.hide();
-      requestUserInfo();
-      fetchLocation(); // 스플래시가 활성화 된 후 위치 정보 요청
-    }, 2000); // 스플래시 활성화 시간 2초
-  } catch (e) {
-    console.error('오류 발생:', e.message);
-  }
-
   useEffect(() => {
-    console.log(userInfo);
+    const initializeApp = async () => {
+      try {
+        setTimeout(() => {
+          SplashScreen.hide();
+          requestUserInfo();
+          fetchLocation(); // 스플래시가 활성화 된 후 위치 정보 요청
+        }, 2000); // 스플래시 활성화 시간 2초
+      } catch (e) {
+        console.error('오류 발생:', e.message);
+      }
+    };
+  
+    initializeApp();
+  }, []); // 빈 배열을 전달하여 한 번만 실행되도록 함
 
-    if(userInfo?.accessToken && currentPage === "LoginHub"){
-        navigationRef.current?.navigate('HomeScreen');
-    }
-  }, [userInfo])
+
 
   return (
   <NavigationContainer ref={navigationRef}>
