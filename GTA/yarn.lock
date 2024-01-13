@@ -5822,7 +5822,7 @@
   "resolved" "https://registry.npmjs.org/react-native-splash-screen/-/react-native-splash-screen-3.3.0.tgz"
   "version" "3.3.0"
 
-"react-native-svg@^13.14.0", "react-native-svg@> 6.4.1":
+"react-native-svg@> 6.4.1":
   "integrity" "sha512-27ZnxUkHgWICimhuj6MuqBkISN53lVvgWJB7pIypjXysAyM+nqgQBPh4vXg+7MbqLBoYvR4PiBgKfwwGAqVxHg=="
   "resolved" "https://registry.npmjs.org/react-native-svg/-/react-native-svg-13.14.0.tgz"
   "version" "13.14.0"

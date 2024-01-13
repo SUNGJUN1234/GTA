@@ -1,5 +1,15 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, ImageBackground } from 'react-native';
+import stampImage0 from '../../assets/stamp_0.png';
+import stampImage1 from '../../assets/stamp_1.png';
+import stampImage2 from '../../assets/stamp_2.png';
+import stampImage3 from '../../assets/stamp_3.png';
+import stampImage4 from '../../assets/stamp_4.png';
+import stampImage5 from '../../assets/stamp_5.png';
+import stampImage6 from '../../assets/stamp_6.png';
+import stampImage7 from '../../assets/stamp_7.png';
+import stampImage8 from '../../assets/stamp_8.png';
+import stampImage9 from '../../assets/stamp_9.png';
 import { theme } from '../global/colors';
 
 import {
@@ -10,29 +20,55 @@ import {
   ContributionGraph,
   StackedBarChart
 } from "react-native-chart-kit";
+import { useAppContext } from '../global/AppContext';
 
 // 아이콘 import
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import { createAxiosInstance } from '../global/AxiosInstance';
+import { awsServer } from '../server';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const Profile = () => {
+  const { position, setPosition , userInfo , setUserInfo , now , setNow } = useAppContext(); // 전역 변수
 
   const totalStamp = 83;
-  const myStamp = 6;
+  const [ stampData, setStampData ] = useState([]);
+  const [ stampCount, setStampCount] = useState(0);
+  const [ loading, setLoading ] = useState(true);
+
+  async function loadProfile (){
+    const axiosInstance = createAxiosInstance(userInfo.accessToken, userInfo.refreshToken);
+
+    const userResponse = await axiosInstance.get(awsServer.url + `/member/getUsersData`);
+    const userId = userResponse.data.id;
+    const stampResponse = await axiosInstance.get(awsServer.url + `/api/stamps/v3/findUsers/${userId}`);
+    setStampData(stampResponse.data);
+    setStampCount(stampResponse.data.length);
+    setLoading(false);
+
+    // console.log(stampResponse.data);
+  }
+
+  useEffect(()=> {
+      loadProfile();
+
+  },[])
+
+
 
   const data = [
     {
       name: "미방문 관광지",
-      population: totalStamp - myStamp,
+      population: totalStamp - stampCount,
       color: "orange",
       legendFontColor: "#000",
       legendFontSize: 15
     },
     {
       name: "방문 관광지",
-      population: myStamp,
-      color: "pink",
+      population: stampCount,
+      color: "brown",
       legendFontColor: "#000",
       legendFontSize: 15
     },
@@ -48,6 +84,10 @@ const Profile = () => {
     barPercentage: 0.5,
     useShadowColorFromDataset: false // optional
   };
+
+  if(loading) {
+    return;
+  }
 
   return (
     <View style={styles.container}>
@@ -76,29 +116,74 @@ const Profile = () => {
 
         <View style={styles.rowView}>
           <Text style={styles.titleText}>나의 스탬프</Text>
-          <Text style={styles.moreText}>{myStamp} / {totalStamp}</Text>
+          <Text style={styles.moreText}>{stampCount} / {totalStamp}</Text>
         </View>
         
+        {stampCount===0?
+        (
+          <View></View>
+        )
+        :
+        (
         <View style={styles.stampCollectionView}>
-          <View style={styles.stampView}>
-            <Text>스탬프</Text>
-          </View>
-          <View style={styles.stampView}>
-            <Text>스탬프</Text>
-          </View>
-          <View style={styles.stampView}>
-            <Text>스탬프</Text>
-          </View>
-          <View style={styles.stampView}>
-            <Text>스탬프</Text>
-          </View>
-          <View style={styles.stampView}>
-            <Text>스탬프</Text>
-          </View>
-          <View style={styles.stampView}>
-            <Text>스탬프</Text>
-          </View>
+          {stampData.map((item, idx) => {
+            // 동적으로 이미지를 선택할 때는 switch 문이나 if-else 문을 사용
+            let selectedImage;
+            switch (item.id % 10) {
+              case 0:
+                selectedImage = stampImage0;
+                break;
+              case 1:
+                selectedImage = stampImage1;
+                break;
+              case 2:
+                selectedImage = stampImage2;
+                break;
+              case 2:
+                selectedImage = stampImage2;
+                break;
+              case 3:
+                selectedImage = stampImage3;
+                break;
+              case 4:
+                selectedImage = stampImage4;
+                break;
+              case 5:
+                selectedImage = stampImage5;
+                break;
+              case 6:
+                selectedImage = stampImage6;
+                break;
+              case 7:
+                selectedImage = stampImage7;
+                break;
+              case 8:
+                selectedImage = stampImage8;
+                break;
+              case 9:
+                selectedImage = stampImage9;
+                break;
+              default:
+                selectedImage = stampImage0;
+            }
+
+            return (
+              <ImageBackground
+                source={selectedImage}
+                style={styles.stampImage}
+                key={idx}
+              >
+                <View style={styles.stampView}>
+                  <Text>No. {item.id}</Text>
+                  <Text style={styles.stampName}>{item.name}</Text>
+                </View>
+              </ImageBackground>
+            );
+          })}
         </View>
+        )
+        }
+        
       </ScrollView>
     </View>
   );
@@ -127,18 +212,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  stampView: {
+  stampImage: {
     width:(SCREEN_WIDTH - 80)/3,
     height:(SCREEN_WIDTH - 80)/3,
     margin: 10,
-    backgroundColor:'orange',
+  },
+  stampView: {
+    width:(SCREEN_WIDTH - 80)/3,
+    height:(SCREEN_WIDTH - 80)/3,
     borderRadius:500,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 4,
   },
-  scrollView: {
-
-  },
+  stampName: {
+    paddingHorizontal: 14,
+    marginTop: 4,
+    marginBottom: 16,
+    fontSize: 10,
+    fontWeight: '900',
+  }
 
 });
 

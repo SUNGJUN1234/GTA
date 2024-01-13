@@ -64,9 +64,11 @@ export default function App() {
     try {
       const axiosInstance = createAxiosInstance(userInfo.accessToken, userInfo.refreshToken);
 
+      const userResponse = await axiosInstance.get(awsServer.url + `/member/getUsersData`);
+      const userId = userResponse.data.id;
       const data = {
         touristAttractionsId: now[0]['touristAttractionsResponseRedisDto'].id,
-        usersId: 1,
+        usersId: userId,
         name: now[0]['touristAttractionsResponseRedisDto'].tourDestNm + ' 스탬프',
         issueDate: null,
         expirationDate: null,
