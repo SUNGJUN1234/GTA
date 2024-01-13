@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAppContext } from '../global/AppContext';
 import axios from 'axios'
 import { createAxiosInstance } from '../global/AxiosInstance';
+import { setStorageItem, getStorageItem } from "../global/AsyncStorage";
+import { useNavigation } from '@react-navigation/native';
 
 // 컴포넌트 import
 import LoginHub from './LoginHub'; 
@@ -54,6 +56,7 @@ export default function App() {
   const { position, setPosition , userInfo , setUserInfo , now , setNow } = useAppContext(); // 전역 변수
   const [loading , setLoading] = useState(true);
   const nowLocation = "첨성대";
+  const navigation = useNavigation(); // useNavigation 훅을 이용해 navigation 객체 가져오기
 
   // 유저 정보 불러오기
   useEffect(()=>{
@@ -69,7 +72,7 @@ export default function App() {
       const data = {
         touristAttractionsId: now[0]['touristAttractionsResponseRedisDto'].id,
         usersId: userId,
-        name: now[0]['touristAttractionsResponseRedisDto'].tourDestNm + ' 스탬프',
+        name: now[0]['touristAttractionsResponseRedisDto'].tourDestNm,
         issueDate: null,
         expirationDate: null,
       };
@@ -78,12 +81,24 @@ export default function App() {
         awsServer.url + `/api/stamps/v3/save`,
         data,
       ).then((res) => {
-        console.log("스탬프 성공!");
+        alert(`${data.name} 스탬프 쾅!`)
       });
     } catch (e) {
-      console.error(e);
+      alert('이미 해당 스탬프가 있습니다.')
     }
   };
+
+  const logout = async () => {
+    try {
+      alert('로그아웃 되었습니다.')
+      await setStorageItem('accessToken', '');
+      await setStorageItem('refreshToken', '');
+      setUserInfo(null);
+      navigation.navigate('LoginScreen');
+    }catch (e) {
+      console.log(e);
+    }
+  }
 
   if (loading) {
     return;
@@ -103,7 +118,7 @@ export default function App() {
           return (
             <TouchableOpacity
               style={styles.stampBtn}
-              onPress={() => alert('로그아웃!')}
+              onPress={() => logout()}
             >
               <Text style={styles.logoutText}>로그아웃</Text>
             </TouchableOpacity>

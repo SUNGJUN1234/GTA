@@ -42,12 +42,17 @@ const Profile = () => {
 
     const userResponse = await axiosInstance.get(awsServer.url + `/member/getUsersData`);
     const userId = userResponse.data.id;
-    const stampResponse = await axiosInstance.get(awsServer.url + `/api/stamps/v3/findUsers/${userId}`);
-    setStampData(stampResponse.data);
-    setStampCount(stampResponse.data.length);
+    try {
+      const stampResponse = await axiosInstance.get(awsServer.url + `/api/stamps/v3/findUsers/${userId}`);
+      setStampData(stampResponse.data);
+      setStampCount(stampResponse.data.length);
+      // console.log(stampResponse.data);
+    } catch (error) {
+      console.log("스탬프 없다!");
+      // 에러 처리 로직 추가 (예: 사용자에게 알림 표시)
+    }
     setLoading(false);
 
-    // console.log(stampResponse.data);
   }
 
   useEffect(()=> {
@@ -129,7 +134,7 @@ const Profile = () => {
           {stampData.map((item, idx) => {
             // 동적으로 이미지를 선택할 때는 switch 문이나 if-else 문을 사용
             let selectedImage;
-            switch (item.id % 10) {
+            switch (item.touristAttractionsId % 10) {
               case 0:
                 selectedImage = stampImage0;
                 break;

@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import React, { useState } from "react";
 import {
   login,
@@ -84,10 +84,7 @@ const LoginHub = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       <View style={styles.resultContainer}>
-        <ScrollView>
-          <Text>{result}</Text>
-          <View style={{ height: 100 }} />
-        </ScrollView>
+        <Image source={require('../../assets/main_img.png')} style={styles.mainImg} />
       </View>
       <TouchableOpacity
         style={styles.button}
@@ -97,7 +94,7 @@ const LoginHub = ({navigation, route}) => {
       >
         <Text style={styles.text}>카카오 로그인</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => getProfile()}>
+      {/* <TouchableOpacity style={styles.button} onPress={() => getProfile()}>
         <Text style={styles.text}>프로필 조회</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => getShippingAddresses()}>
@@ -108,7 +105,7 @@ const LoginHub = ({navigation, route}) => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => signOutWithKakao()}>
         <Text style={styles.text}>카카오 로그아웃</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -123,9 +120,12 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   resultContainer: {
+    display: 'flex',
+    height: 600,
     flexDirection: "column",
-    width: "100%",
     padding: 24,
+    alignContent: 'center',
+    justifyContent: 'center',
   },
   button: {
     backgroundColor: "#FEE500",
@@ -139,5 +139,11 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
+  },
+  mainImg: {
+    width: 200,
+    height: 200,
+    margin: 'auto',
+    resizeMode: 'cover',
   },
 });

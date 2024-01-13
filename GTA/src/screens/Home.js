@@ -111,6 +111,7 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     backgroundColor: 'white',
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   infoText:{
-
+    fontSize: 14,
   },
   nearText:{
     color: 'black',
