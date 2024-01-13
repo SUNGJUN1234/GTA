@@ -18,9 +18,7 @@ const Home = () => {
 
   // 현재 관광지 데이너
    const [bannerData, setBannerData] = useState([
-    { url: require('../../assets/test1.png') },
-    { url: require('../../assets/test2.png') },
-    { url: require('../../assets/test3.png') },
+    { url: require('../../assets/no_img.png') },
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const swiperRef = useRef(null);
@@ -32,10 +30,21 @@ const Home = () => {
       const axiosInstance = createAxiosInstance(userInfo.accessToken, userInfo.refreshToken);
 
       const nearResponse = await axiosInstance.get(awsServer.url + `/api/touristAttractions/v3/find/near/4/${position.lat}/${position.lng}`);
+
       setNow(nearResponse.data);
       setNearDataArr(nearResponse.data);
+
+      const mainImages = nearResponse.data[0]['touristAttractionsResponseRedisDto'].images;
+      if(mainImages){
+        let mainImageArr = [];
+        mainImages.map((item) => {
+          mainImageArr.push({url : item});
+        })
+        setBannerData(mainImageArr);
+      }
+
     } catch (e) {
-      // console.log(e);
+      console.log(e);
     } finally {
       setLoading(false);
     }

@@ -6,7 +6,6 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const NearCard = ({data}) => {
   const dtoData = data['touristAttractionsResponseRedisDto'];
-  console.log(dtoData.images);
 
   return (
     <View style={styles.nearCardTopView}>
@@ -19,11 +18,7 @@ const NearCard = ({data}) => {
           style={styles.cardImg}
           ></Image>
           :
-          <Text>없어</Text>
-          // <Image
-          // source= {require('../../assets/test2.png') }
-          // style={styles.cardImg}
-          // ></Image>
+          <Text>이미지 없어</Text>
           }
         </View>
         <View style={styles.detailView}>
