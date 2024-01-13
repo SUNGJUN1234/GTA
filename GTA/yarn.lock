@@ -5822,10 +5822,10 @@
   "resolved" "https://registry.npmjs.org/react-native-splash-screen/-/react-native-splash-screen-3.3.0.tgz"
   "version" "3.3.0"
 
-"react-native-svg@> 6.4.1":
-  "integrity" "sha512-27ZnxUkHgWICimhuj6MuqBkISN53lVvgWJB7pIypjXysAyM+nqgQBPh4vXg+7MbqLBoYvR4PiBgKfwwGAqVxHg=="
-  "resolved" "https://registry.npmjs.org/react-native-svg/-/react-native-svg-13.14.0.tgz"
-  "version" "13.14.0"
+"react-native-svg@^14.1.0", "react-native-svg@> 6.4.1":
+  "integrity" "sha512-HeseElmEk+AXGwFZl3h56s0LtYD9HyGdrpg8yd9QM26X+d7kjETrRQ9vCjtxuT5dCZEIQ5uggU1dQhzasnsCWA=="
+  "resolved" "https://registry.npmjs.org/react-native-svg/-/react-native-svg-14.1.0.tgz"
+  "version" "14.1.0"
   dependencies:
     "css-select" "^5.1.0"
     "css-tree" "^1.1.3"

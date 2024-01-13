@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image, Alert } from "react-native";
 import React, { useState } from "react";
 import {
   login,
@@ -20,24 +20,23 @@ const LoginHub = ({navigation, route}) => {
     try {
       const token = await login();
       setResult(JSON.stringify(token));
-      // console.log(JSON.stringify(token));
+  
       const kakaoAccessToken = JSON.stringify(token.accessToken);
       const loginResponse = await axios.get(awsServer.url + `/oauth2/kakao?access_token=${kakaoAccessToken}`);
-
+  
       const requestHeader = loginResponse.request.responseHeaders;
-
+  
       const refreshToken = requestHeader['Set-Cookie'];
       const accessToken = loginResponse.data.accessToken;
-      
+  
       setUserInfo({
         accessToken: accessToken,
         refreshToken: refreshToken
-      })
-
+      });
+  
       await setStorageItem('accessToken', accessToken);
       await setStorageItem('refreshToken', refreshToken);
-
-
+  
       navigation.navigate('HomeScreen');
     } catch (err) {
       console.error("login err", err);
@@ -130,7 +129,6 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#FEE500",
     borderRadius: 40,
-    borderWidth: 1,
     width: 250,
     height: 40,
     paddingHorizontal: 20,
@@ -139,10 +137,11 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: "center",
+    color: "black"
   },
   mainImg: {
-    width: 200,
-    height: 200,
+    width: 100,
+    height: 100,
     margin: 'auto',
     resizeMode: 'cover',
   },
