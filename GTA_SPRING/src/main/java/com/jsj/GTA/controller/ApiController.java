@@ -51,7 +51,7 @@ public class ApiController {
                 .build();
 
         return ResponseEntity.ok()
-                .header("Set-Cookie", responseCookie.toString())
+                .header("Cookie", responseCookie.toString())
                 .header("Authorization", "Bearer " + tokenDto.getAccessToken()).build();
     }
 
