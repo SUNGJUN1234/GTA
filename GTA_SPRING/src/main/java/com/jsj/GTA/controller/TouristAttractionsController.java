@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.geo.GeoResults;
 import org.springframework.data.redis.connection.RedisGeoCommands;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,10 +52,10 @@ public class TouristAttractionsController {
     @Parameter(name = "touristAttractionsId", description = "관광지 id")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsResponseRedisDto.class)))
     @GetMapping("/v3/findTouristAttractions/{touristAttractionsId}")
-    public TouristAttractionsResponseRedisDto findByIdWithGeo(@PathVariable String touristAttractionsId) throws IOException {
+    public ResponseEntity<?> findByIdWithGeo(@PathVariable String touristAttractionsId) throws IOException {
         TouristAttractionsResponseRedisDto dto = touristAttractionsService.findByIdWithRedis(touristAttractionsId);
 //        geospatialService.save(dto.getId(), dto.getLat(), dto.getLng());
-        return dto;
+        return ResponseEntity.ok(dto);
     }
 
     /**
@@ -73,14 +74,16 @@ public class TouristAttractionsController {
     @Operation(summary = "관광지 전체 조회(api로 접근)", description = "관광지 전체 조회, 공공 api에서 조회")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsListResponseDto.class)))
     @GetMapping("/v3/findAll/api")
-    public List<TouristAttractionsListResponseDto> findAllDesc2() {
-        return touristAttractionsService.findAllDesc();
+    public ResponseEntity<?> findAllDesc2() {
+        List<TouristAttractionsListResponseDto> dto = touristAttractionsService.findAllDesc();
+        return ResponseEntity.ok(dto);
     }
     @Operation(summary = "관광지 전체 조회(redis로 접근)", description = "관광지 전체 조회. 이미지 url을 포함한 캐시 스토어에서 조회")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsResponseRedisDto.class)))
     @GetMapping("/v3/findAll/cache")
-    public List<TouristAttractionsResponseRedisDto> findAllDescWithRedis2() {
-        return touristAttractionsService.findAllDescWithRedis();
+    public ResponseEntity<?> findAllDescWithRedis2() {
+        List<TouristAttractionsResponseRedisDto> dto = touristAttractionsService.findAllDescWithRedis();
+        return ResponseEntity.ok(dto);
     }
 
     /**
@@ -100,8 +103,9 @@ public class TouristAttractionsController {
     @Parameter(name = "stampsId", description = "스탬프 id")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsResponseRedisDto.class)))
     @GetMapping("/v3/findStamps/{stampsId}")
-    public TouristAttractionsResponseRedisDto findByStampsIdWithRedis2(@PathVariable Long stampsId) throws IOException {
-        return touristAttractionsService.findByStampsIdWithRedis(stampsId);
+    public ResponseEntity<?> findByStampsIdWithRedis2(@PathVariable Long stampsId) throws IOException {
+        TouristAttractionsResponseRedisDto dto = touristAttractionsService.findByStampsIdWithRedis(stampsId);
+        return ResponseEntity.ok(dto);
     }
 
     /**
@@ -121,8 +125,9 @@ public class TouristAttractionsController {
     @Parameter(name = "usersId", description = "사용자 id")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsResponseRedisDto.class)))
     @GetMapping("/v3/findUsers/{usersId}")
-    public List<TouristAttractionsResponseRedisDto> findByUserIdDescWithRedis2(@PathVariable Long usersId) throws IOException {
-        return touristAttractionsService.findByUserIdDescWithRedis(usersId);
+    public ResponseEntity<?> findByUserIdDescWithRedis2(@PathVariable Long usersId) throws IOException {
+        List<TouristAttractionsResponseRedisDto> dto = touristAttractionsService.findByUserIdDescWithRedis(usersId);
+        return ResponseEntity.ok(dto);
     }
 
     /**
@@ -143,8 +148,9 @@ public class TouristAttractionsController {
     @Parameter(name = "lng", description = "관광지 lng")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsResponseRedisDto.class)))
     @GetMapping("/v3/find/{lat}/{lng}")
-    public TouristAttractionsResponseRedisDto findByCoordinateWithRedis2(@PathVariable double lat, @PathVariable double lng) throws IOException {
-        return touristAttractionsService.findByCoordinateWithRedis(lat, lng);
+    public ResponseEntity<?> findByCoordinateWithRedis2(@PathVariable double lat, @PathVariable double lng) throws IOException {
+        TouristAttractionsResponseRedisDto dto = touristAttractionsService.findByCoordinateWithRedis(lat, lng);
+        return ResponseEntity.ok(dto);
     }
 
     /**
@@ -166,10 +172,11 @@ public class TouristAttractionsController {
     @Parameter(name = "lng", description = "현재 lng")
     @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = TouristAttractionsGeoResponseDto.class)))
     @GetMapping("/v3/find/near/{count}/{lat}/{lng}")
-    public List<TouristAttractionsGeoResponseDto> findByNearCoordinateWithGeo(@PathVariable int count, @PathVariable double lat, @PathVariable double lng) throws IOException {
+    public ResponseEntity<?> findByNearCoordinateWithGeo(@PathVariable int count, @PathVariable double lat, @PathVariable double lng) throws IOException {
         // redis 로 부터 좌표 정보를 불러오고
         GeoResults<RedisGeoCommands.GeoLocation<String>> radius =  geospatialService.findGeoFromLatAndLng(count, lat, lng);
         // 좌표 정보에 있는 관광지 Id 에 부합하는 관광지 리스트 불러오기
-        return geospatialService.findTouristAttractionsByGeo(radius);
+        List<TouristAttractionsGeoResponseDto> dto = geospatialService.findTouristAttractionsByGeo(radius);
+        return ResponseEntity.ok(dto);
     }
 }
