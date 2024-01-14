@@ -36,6 +36,14 @@
 <p>보안 및 DB 부하를 고려한 Spring Security JWT</p>
 <h2>아키텍처</h2>
 <img
+  width="100%"
+  height="100%"
+  alt="architecture"
   src="https://github.com/SUNGJUN1234/GTA/assets/91239439/b2d9b017-2893-45d9-8980-e85bec1be71d"
-  width="100%" height="100%"/>
+  >
 <h2>ERD</h2>
+<img
+  width="671"
+  alt="image"
+  src="https://github.com/SUNGJUN1234/GTA/assets/91239439/b5d4e72b-fa69-4f73-9e4c-1b49697d84c2"
+  >
