@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 // 트랜잭션 범위는 유지, 조회기능만 남겨서 조회 속도 개선 (등록,수정,삭제 기능이 전혀 없는 서비스 메소드에서 사용) 기본 세팅을 하고, readOnly 가 아닌 경우만 따로 명시
 public class StampsService {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(TouristAttractionsService.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(StampsService.class);
     private final StampsRepository stampsRepository;
 
     /**
@@ -24,15 +25,17 @@ public class StampsService {
      */
     @Transactional
     public Long save(StampsSaveRequestDto requestDto) {
-        LOGGER.info("StampsService[save] save data : {}", requestDto);
+        LOGGER.info("[save] save data : {}", requestDto);
         return stampsRepository.save(requestDto.toEntity()).getId();
     }
 
     public boolean isDuplicate(StampsSaveRequestDto dto) {
         // 사용자 아이디, 관광지 아이디 기반으로 조회
         if(stampsRepository.findByUserIdAndTouristAttractionsId(dto.getUsersId(), dto.getTouristAttractionsId()).isPresent()) {
+            LOGGER.info("[isDuplicate] true");
             return true; // 중복o
         } else {
+            LOGGER.info("[isDuplicate] false");
             return false; // 중복x
         }
     }
@@ -44,10 +47,17 @@ public class StampsService {
      * @return StampsResponseDto
      */
     public StampsResponseDto findById(Long id) {
-        LOGGER.info("StampsService[findById] request data : {}", id);
-        Stamps entity = stampsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 스탬프가 없습니다. id = " + id));
-        return new StampsResponseDto(entity);
+        LOGGER.info("[findById] request data : {}", id);
+        Optional<Stamps> entity = stampsRepository.findById(id);
+        StampsResponseDto dto;
+        if(entity.isPresent()) {
+            LOGGER.info("[findById] Data dose existed.");
+            dto = new StampsResponseDto(entity.get());
+        } else {
+            LOGGER.info("[findById] Data dose not existed.");
+            dto = new StampsResponseDto(new Stamps());
+        }
+        return dto;
     }
 
     /**
@@ -67,9 +77,16 @@ public class StampsService {
      * @return List<StampsResponseDto>
      */
     public List<StampsListResponseDto> findByUserIdDesc(Long id) {
-        return stampsRepository.findByUserIdDesc(id).stream()
+        LOGGER.info("[findByUserIdDesc] request data: {}", id);
+        List<StampsListResponseDto> dto = stampsRepository.findByUserIdDesc(id).stream()
                 .map(StampsListResponseDto::new)
                 .collect(Collectors.toList());
+        if(dto.size() == 0) {
+            LOGGER.info("[findByUserIdDesc] Data dose not existed.");
+        } else {
+            LOGGER.info("[findByUserIdDesc] Data dose existed.");
+        }
+        return dto;
     }
 
     /**
@@ -88,7 +105,13 @@ public class StampsService {
      * @return List<UsersStampCountDto>
      */
     public List<UsersStampCountDto> findByUsersRankWithStampCountDesc() {
-        return stampsRepository.findByUsersRankWithStampCountDesc();
+        List<UsersStampCountDto> dto = stampsRepository.findByUsersRankWithStampCountDesc();
+        if(dto.size() == 0) {
+            LOGGER.info("[findByUsersRankWithStampCountDesc] Data dose not existed.");
+        } else {
+            LOGGER.info("[findByUsersRankWithStampCountDesc] Data dose existed.");
+        }
+        return dto;
     }
 
     /**
@@ -97,7 +120,13 @@ public class StampsService {
      * @return List<UsersStampCountDto>
      */
     public List<UsersStampCountDto> findByUsersRankWithStampCountLimitDesc(int limit) {
-        return stampsRepository.findByUsersRankWithStampCountLimitDesc(limit);
+        List<UsersStampCountDto> dto = stampsRepository.findByUsersRankWithStampCountLimitDesc(limit);
+        if(dto.size() == 0) {
+            LOGGER.info("[findByUsersRankWithStampCountLimitDesc] Data dose not existed.");
+        } else {
+            LOGGER.info("[findByUsersRankWithStampCountLimitDesc] Data dose existed.");
+        }
+        return dto;
     }
 
     /**
@@ -106,9 +135,15 @@ public class StampsService {
      * @return List<StampsResponseDto>
      */
     public List<StampsListResponseDto> findByTouristAttractionsIdDesc(String id) {
-        return stampsRepository.findByTouristAttractionsIdDesc(id).stream()
+        List<StampsListResponseDto> dto = stampsRepository.findByTouristAttractionsIdDesc(id).stream()
                 .map(StampsListResponseDto::new)
                 .collect(Collectors.toList());
+        if(dto.size() == 0) {
+            LOGGER.info("[findByTouristAttractionsIdDesc] Data dose not existed.");
+        } else {
+            LOGGER.info("[findByTouristAttractionsIdDesc] Data dose existed.");
+        }
+        return dto;
     }
 
 

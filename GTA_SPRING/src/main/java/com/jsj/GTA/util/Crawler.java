@@ -2,6 +2,8 @@ package com.jsj.GTA.util;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +12,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Crawler {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Crawler.class);
 
     private static final String USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36";
 
@@ -40,6 +44,7 @@ public class Crawler {
      * @return 사진 url 리스트
      */
     public static List<String> getMatcherPlacePhoto(String html) {
+        LOGGER.info("");
         Pattern pattern = PHOTO_PATTERN;
         Pattern visitorPattern = VISITOR_PHOTO_PATTERN;
         Matcher matcher = pattern.matcher(html);

@@ -28,14 +28,14 @@ public class ApiController {
     private final TokenService tokenService;
     private final OAuth2UserService oAuth2UserService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final Logger LOGGER = LoggerFactory.getLogger(TouristAttractionsService.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(ApiController.class);
 
     @Operation(summary = "토큰 갱신")
     @PostMapping("/refreshToken")
     public ResponseEntity<String> refreshToken(HttpServletRequest request, @RequestBody String accessToken) {
-        LOGGER.info("ApiController[refreshToken] request: {} accessToken: {}", request, accessToken);
+        LOGGER.info("[refreshToken] request: {} accessToken: {}", request, accessToken);
         String refreshToken = request.getHeader("Authorization").substring(7);
-        LOGGER.info("ApiController[refreshToken] refreshToken: {}", refreshToken);
+        LOGGER.info("[refreshToken] refreshToken: {}", refreshToken);
 
         if(!jwtTokenProvider.tokenMatches(accessToken.substring(7), refreshToken)) {
             return ResponseEntity.badRequest().body("두 토큰의 소유주가 일치하지 않습니다.");
@@ -58,7 +58,7 @@ public class ApiController {
     @Operation(summary = "카카오 소셜 로그인")
     @GetMapping("/kakao")
     public ResponseEntity<TokenResponseDto> oauth2Kakao(@RequestParam("access_token") String accessToken) throws ParseException, JsonProcessingException, ParseException, JsonProcessingException {
-        LOGGER.info("ApiController[oauth2Kakao] accessToken: {}", accessToken);
+        LOGGER.info("[oauth2Kakao] accessToken: {}", accessToken);
         Map<String, Object> usersMap =  oAuth2UserService.findOrSaveUsers(accessToken, "kakao");
         TokenDto tokenDto = tokenService.createToken((UsersDto) usersMap.get("dto"));
 

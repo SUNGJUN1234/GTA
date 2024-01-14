@@ -22,11 +22,11 @@ public class TokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final UsersRepository usersRepository;
 
-    private final Logger LOGGER = LoggerFactory.getLogger(TouristAttractionsService.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(TokenService.class);
 
 
     public TokenDto createToken(UsersDto usersDto) {
-        LOGGER.info("TokenService[createToken(UserDto)] request data userId: {}", usersDto.getUserId());
+        LOGGER.info("[createToken(UserDto)] request data userId: {}", usersDto.getUserId());
         TokenDto tokenDto = tokenProvider.createTokenDto(usersDto.getUserId(), usersDto.getRole());
         Users users = usersRepository.findByUserId(usersDto.getUserId()).orElseThrow(() -> new RuntimeException("Wrong Access (users does not exist)"));
         RefreshToken refreshToken = RefreshToken.createDto(
@@ -34,18 +34,18 @@ public class TokenService {
                 users.getUserId());
 
         refreshTokenRepository.save(refreshToken);
-        LOGGER.info("TokenService[createToken(UserDto)] save RefreshToken data userId: {} token: {}",
+        LOGGER.info("[createToken(UserDto)] save RefreshToken data userId: {} token: {}",
                 refreshToken.getUsersId(),
                 refreshToken.getToken());
         return tokenDto;
     }
 
     public TokenDto createToken(Users users) {
-        LOGGER.info("TokenService[createToken(Users)] Users data: {} userId: {}",
+        LOGGER.info("[createToken(Users)] Users data: {} userId: {}",
                 users,
                 users.getUserId());
         TokenDto tokenDto = tokenProvider.createTokenDto(users.getUserId(), users.getRole().getKey());
-        LOGGER.info("TokenService[createToken(Users)] TokenDto data AccessToken: {} TokenType: {} RefreshToken: {} Duration: {}",
+        LOGGER.info("[createToken(Users)] TokenDto data AccessToken: {} TokenType: {} RefreshToken: {} Duration: {}",
                 tokenDto.getAccessToken(),
                 tokenDto.getTokenType(),
                 tokenDto.getRefreshToken(),
@@ -54,7 +54,7 @@ public class TokenService {
                 .usersId(users.getUserId())
                 .token(tokenDto.getRefreshToken())
                 .build();
-        LOGGER.info("TokenService[createToken(Users)] RefreshToken data userId: {} token: {}",
+        LOGGER.info("[createToken(Users)] RefreshToken data userId: {} token: {}",
                 refreshToken.getUsersId(),
                 refreshToken.getToken());
         refreshTokenRepository.save(refreshToken);
@@ -63,23 +63,23 @@ public class TokenService {
     }
 
     public TokenDto regenerateToken(String refreshToken) {
-        LOGGER.info("TokenService[regenerateToken] regenerateToken Request data refreshToken: {}",
+        LOGGER.info("[regenerateToken] regenerateToken Request data refreshToken: {}",
                 refreshToken);
         Optional<RefreshToken> redisRefreshToken = refreshTokenRepository.findById(refreshToken);
         if (!redisRefreshToken.isPresent()) {
-            LOGGER.info("TokenService[regenerateToken] RedisRefreshToken doesn't existed");
+            LOGGER.info("[regenerateToken] RedisRefreshToken doesn't existed");
             return null;
         }
-        LOGGER.info("TokenService[regenerateToken] RedisRefreshToken existed");
+        LOGGER.info("[regenerateToken] RedisRefreshToken existed");
         String userId = redisRefreshToken.get().getUsersId();
 //        refreshTokenRepository.deleteById(refreshToken);
-        LOGGER.info("TokenService[regenerateToken] userId: {}", userId);
+        LOGGER.info("[regenerateToken] userId: {}", userId);
         Optional<Users> usersEntity = usersRepository.findByUserId(userId);
         if (usersEntity.isPresent()) {
             TokenDto dto = createToken(usersRepository.findByUserId(userId).get());
             return dto;
         } else {
-            LOGGER.info("TokenService[regenerateToken] usersEntity doesn't existed");
+            LOGGER.info("[regenerateToken] usersEntity doesn't existed");
             return null;
         }
     }
