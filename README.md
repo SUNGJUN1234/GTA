@@ -35,5 +35,7 @@
 <p>확장성 및 유연성을 고려한 AWS EC2</p>
 <p>보안 및 DB 부하를 고려한 Spring Security JWT</p>
 <h2>아키텍처</h2>
-![아키텍처](https://github.com/SUNGJUN1234/GTA/assets/91239439/b2d9b017-2893-45d9-8980-e85bec1be71d)
+<img
+  src="https://github.com/SUNGJUN1234/GTA/assets/91239439/b2d9b017-2893-45d9-8980-e85bec1be71d"
+  width="100%" height="100%"/>
 <h2>ERD</h2>
