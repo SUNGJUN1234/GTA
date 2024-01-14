@@ -31,7 +31,7 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity // Spring Security 설정을 활성화
 public class SecurityConfig {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(TouristAttractionsService.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
 
     private final JwtTokenProvider jwtTokenProvider;
     private final TokenService tokenService;

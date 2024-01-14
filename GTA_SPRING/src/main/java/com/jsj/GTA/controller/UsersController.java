@@ -26,12 +26,12 @@ public class UsersController {
     private final UsersService usersService;
     private final PasswordEncoder passwordEncoder;
 
-    private final Logger LOGGER = LoggerFactory.getLogger(TouristAttractionsService.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(UsersController.class);
 
     @Operation(summary = "회원가입")
     @PostMapping("/signup")
     public ResponseEntity<String> memberSignup(@RequestBody UsersRequestDto requestDto) {
-        LOGGER.info("UsersController[memberSignup] memberSignup data : {}", requestDto);
+        LOGGER.info("[memberSignup] memberSignup data : {}", requestDto);
         System.out.println(requestDto.getEmail());
         String rawPassword = requestDto.getPassword();
         if (rawPassword != null) {
@@ -48,7 +48,7 @@ public class UsersController {
     @Operation(summary = "로그인")
     @PostMapping("/login")
     public ResponseEntity<String> memberLogin(@RequestBody LoginRequestDto loginRequestDto) {
-        LOGGER.info("UsersController[memberLogin] loginRequestDto data userId: {}", loginRequestDto.getUserId());
+        LOGGER.info("[memberLogin] loginRequestDto data userId: {}", loginRequestDto.getUserId());
         TokenDto tokenDto = usersService.login(loginRequestDto);
         ResponseCookie responseCookie = ResponseCookie
                 .from("refresh_token", tokenDto.getRefreshToken())
@@ -64,10 +64,38 @@ public class UsersController {
                 .header("Authorization", "Bearer " + tokenDto.getAccessToken()).build();
     }
 
+    @Operation(summary = "로그아웃")
+    @PostMapping("/logout")
+    public ResponseEntity<String> memberLogout() {
+        String username = SecurityUtil.getCurrentUsername();
+        LOGGER.info("[memberLogout] username: {}", username);
+        ResponseCookie responseCookie = ResponseCookie
+                .from("refresh_token", "")
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .maxAge(0)
+                .path("/")
+                .build();
+
+        return ResponseEntity.ok()
+                .header("Set-Cookie", responseCookie.toString())
+                .header("Authorization", "").build();
+    }
+
     @Operation(summary = "회원정보 호출")
     @GetMapping("/getUsersData")
     public ResponseEntity<UsersDto> loadUsersData() {
         return ResponseEntity.ok(usersService.findByUserId(SecurityUtil.getCurrentUsername()));
     }
 
+    @Operation(summary = "회원탈퇴")
+    @PostMapping("/withdraw")
+    public ResponseEntity<String> memberWithdraw(@RequestBody LoginRequestDto loginRequestDto) {
+        String userId = loginRequestDto.getUserId();
+        LOGGER.info("[memberWithdraw] loginRequestDto data userId: {}", loginRequestDto.getUserId());
+        usersService.withdraw(loginRequestDto);
+
+        return ResponseEntity.ok(userId);
+    }
 }

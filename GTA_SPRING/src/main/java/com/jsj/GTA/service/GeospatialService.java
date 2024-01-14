@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GeospatialService {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(TouristAttractionsService.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(GeospatialService.class);
     private final TouristAttractionsRedisRepository touristAttractionsRedisRepository;
     private final TouristAttractionsRepository touristAttractionsRepository;
     private final RedisTemplate<String, String> redisTemplate;
@@ -37,14 +37,14 @@ public class GeospatialService {
      * @return
      */
     public String save(String touristAttractionsId, double lat, double lng) {
-        LOGGER.info("GeospatialService[save] request data touristAttractionsId : {} lat: {} lng : {}", touristAttractionsId, lat, lng);
+        LOGGER.info("[save] request data touristAttractionsId : {} lat: {} lng : {}", touristAttractionsId, lat, lng);
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo(); // Redis 에 저장할 좌표 자료구조
         Point point = new Point(lng, lat); // 좌표값을 담고(Point 는 lng,lat 순서)
         try {
             geoOperations.add(key, point, touristAttractionsId); // 자료구조에 좌표담기
             return "success";
         } catch (Exception e) {
-            LOGGER.error("GeospatialService[save] save fail", e);
+            LOGGER.error("[save] save fail", e);
             return "fail";
         }
     }
@@ -58,7 +58,7 @@ public class GeospatialService {
      * @return GeoResults<RedisGeoCommands.GeoLocation < String>> 위도 경도를 기반으로 가까운 거리에 있는 좌표 정보
      */
     public GeoResults<RedisGeoCommands.GeoLocation<String>> findGeoFromLatAndLng(int count, double lat, double lng) {
-        LOGGER.info("GeospatialService[findGeoFromLatAndLng] request data count : {} lat: {} lng : {}", count, lat, lng);
+        LOGGER.info("[findGeoFromLatAndLng] request data count : {} lat: {} lng : {}", count, lat, lng);
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo(); // Redis 에 저장할 좌표 자료구조
         Point point = new Point(lng, lat); // 좌표값을 담고(Point 는 lng,lat 순서)
         Metric metric = RedisGeoCommands.DistanceUnit.KILOMETERS; // 거리에 대한 객체
@@ -81,20 +81,20 @@ public class GeospatialService {
                 .radius(key, circle, args);
 
         if (radius == null) {
-            LOGGER.info("GeospatialService[findGeoFromLatAndLng] No Data radius Geo");
+            LOGGER.info("[findGeoFromLatAndLng] No Data radius Geo");
             return null;
         }
-        LOGGER.info("GeospatialService[findGeoFromLatAndLng] Geo Data existed");
+        LOGGER.info("[findGeoFromLatAndLng] Geo Data existed");
         return radius;
     }
 
     public List<TouristAttractionsGeoResponseDto> findTouristAttractionsByGeo(GeoResults<RedisGeoCommands.GeoLocation<String>> radius) {
-        LOGGER.info("GeospatialService[findTouristAttractionsByGeo] request data");
+        LOGGER.info("[findTouristAttractionsByGeo] request data");
         if (radius == null) {
-            LOGGER.info("GeospatialService[findTouristAttractionsByGeo] No Data radius Geo");
+            LOGGER.info("[findTouristAttractionsByGeo] No Data radius Geo");
             return null;
         }
-        LOGGER.info("GeospatialService[findTouristAttractionsByGeo] Geo Data existed");
+        LOGGER.info("[findTouristAttractionsByGeo] Geo Data existed");
         List<TouristAttractionsGeoResponseDto> touristAttractionsGeoResponseDtoList = new ArrayList<>();
         radius.forEach(geoLocationGeoResult -> {
             // 좌표 정보를 담고 있는 변수
@@ -105,7 +105,7 @@ public class GeospatialService {
             Point contentPoint = content.getPoint();
             // 거리
             Distance contentDistance = geoLocationGeoResult.getDistance();
-            LOGGER.info("GeospatialService[findTouristAttractionsByGeo] Geo Data touristAttractionsId : {} point : {} distance : {}", id, contentPoint, contentDistance);
+            LOGGER.info("[findTouristAttractionsByGeo] Geo Data touristAttractionsId : {} point : {} distance : {}", id, contentPoint, contentDistance);
 
             // 얻은 데이터를 기반으로 Redis 조회
             Optional<TouristAttractionsResponseRedisDto> touristAttraction = touristAttractionsRedisRepository.findById(id);

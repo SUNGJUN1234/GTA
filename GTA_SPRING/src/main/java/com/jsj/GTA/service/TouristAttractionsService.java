@@ -243,6 +243,7 @@ public class TouristAttractionsService {
      * @return List<TouristAttractionsResponseDto>
      */
     public TouristAttractionsResponseDto findByCoordinate(double lat, double lng) throws IOException {
+        LOGGER.info("[findByCoordinate] request data lat: {}, lng: {}", lat, lng);
         TouristAttractions touristAttractions;
         touristAttractions = touristAttractionsRepository.findByCoordinate(lat, lng);
         return new TouristAttractionsResponseDto(touristAttractions);
@@ -278,6 +279,7 @@ public class TouristAttractionsService {
      * @return List<TouristAttractionsListResponseDto>
      */
     public List<TouristAttractionsListResponseDto> findByNearCoordinate(int count, double lat, double lng) {
+        LOGGER.info("[findByNearCoordinate] request data count: {}, lat: {}, lng: {}", count, lat, lng);
         // 전체 관광지 조회,
         // list 에 담고,
         List<TouristAttractionsListResponseDto> responseList =

@@ -2,7 +2,10 @@ package com.jsj.GTA.util;
 
 import com.jsj.GTA.domain.touristAttractions.TouristAttractionsListResponseDto;
 import com.jsj.GTA.domain.touristAttractions.redis.TouristAttractionsResponseRedisDto;
+import com.jsj.GTA.service.OAuth2UserService;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Comparator;
 import java.util.List;
@@ -10,6 +13,8 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public class Coordinate {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(Coordinate.class);
 
     public static List<TouristAttractionsListResponseDto> findClosestCoordinates(List<TouristAttractionsListResponseDto> coordinates, int count, double lat, double lng) {
         if (coordinates.size() == 0 || count <= 0) {

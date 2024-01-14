@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(TouristAttractionsService.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     public void authenticateLogin(LoginRequestDto dto) {
-        LOGGER.info("AuthService[authenticateLogin] requestDTO data : {}", dto);
+        LOGGER.info("[authenticateLogin] requestDTO data : {}", dto);
         UsernamePasswordAuthenticationToken authenticationToken = dto.toAuthentication();
-        LOGGER.info("AuthService[authenticateLogin] authenticationToken data : {}", authenticationToken);
+        LOGGER.info("[authenticateLogin] authenticationToken data : {}", authenticationToken);
         authenticationManagerBuilder.getObject().authenticate(authenticationToken);
     }
 }

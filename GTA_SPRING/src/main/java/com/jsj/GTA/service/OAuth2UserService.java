@@ -26,16 +26,16 @@ import java.util.Scanner;
 public class OAuth2UserService {
 
     private final UsersRepository usersRepository;
-    private final Logger LOGGER = LoggerFactory.getLogger(TouristAttractionsService.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(OAuth2UserService.class);
 
     @Transactional
     public Map<String, Object> findOrSaveUsers(String id_token, String platform) throws ParseException, JsonProcessingException {
-        LOGGER.info("OAuth2UserService[findOrSaveUsers] platform: {} token: {}", platform, id_token);
+        LOGGER.info("[findOrSaveUsers] platform: {} token: {}", platform, id_token);
         OAuthAttributes oAuthAttributes;
         switch (platform) {
             case "kakao":
                 oAuthAttributes = getKakaoData(id_token);
-                LOGGER.info("OAuth2UserService[findOrSaveUsers] kakao data: {}", oAuthAttributes.getEmail());
+                LOGGER.info("[findOrSaveUsers] kakao data: {}", oAuthAttributes.getEmail());
                 break;
             default:
                 throw new RuntimeException("제공하지 않는 인증기관입니다.");
@@ -48,11 +48,11 @@ public class OAuth2UserService {
         Integer httpStatus = HttpStatus.OK.value();
 
         OAuthAttributes finalOAuthAttributes = oAuthAttributes;
-        LOGGER.info("OAuth2UserService[findOrSaveUsers] finalOAuthAttributes data: {}", finalOAuthAttributes.getEmail());
+        LOGGER.info("[findOrSaveUsers] finalOAuthAttributes data: {}", finalOAuthAttributes.getEmail());
         Users users = usersRepository.findByEmail(oAuthAttributes.getEmail())
                 .orElseGet(() -> {
                     Users newUser = finalOAuthAttributes.toEntity();
-                    LOGGER.info("OAuth2UserService[findOrSaveUsers] user: {}", newUser.getEmail());
+                    LOGGER.info("[findOrSaveUsers] user: {}", newUser.getEmail());
 //                    newUser.updateRole(Role.ROLE_USER);
                     return usersRepository.save(newUser);
                 });
@@ -69,6 +69,7 @@ public class OAuth2UserService {
     }
 
     private OAuthAttributes getKakaoData(String accessToken) throws JsonProcessingException {
+        LOGGER.info("[getKakaoData] request date: {}", accessToken);
         String url = "https://kapi.kakao.com/v2/user/me";
         String result = Call("GET", url, "Bearer " + accessToken, null);
         ObjectMapper objectMapper = new ObjectMapper();

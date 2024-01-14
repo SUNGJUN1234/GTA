@@ -3,6 +3,8 @@ package com.jsj.GTA.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsj.GTA.domain.touristAttractions.TourDestBaseInfo;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +14,8 @@ import java.net.HttpURLConnection;
 
 @NoArgsConstructor
 public class ParsingJson {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(ParsingJson.class);
 
     /* URLConnection 을 전달받아 연결정보 설정 후 연결, 연결 후 수신한 InputStream 반환 */
     public static InputStream getNetworkConnection(HttpURLConnection urlConnection) throws IOException {
