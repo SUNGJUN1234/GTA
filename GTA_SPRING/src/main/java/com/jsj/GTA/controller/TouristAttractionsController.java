@@ -54,7 +54,7 @@ public class TouristAttractionsController {
     @GetMapping("/v3/findTouristAttractions/{touristAttractionsId}")
     public ResponseEntity<?> findByIdWithGeo(@PathVariable String touristAttractionsId) throws IOException {
         TouristAttractionsResponseRedisDto dto = touristAttractionsService.findByIdWithRedis(touristAttractionsId);
-//        geospatialService.save(dto.getId(), dto.getLat(), dto.getLng());
+//        geospatialService.save(dto.getTouristAttractionsId(), dto.getLat(), dto.getLng());
         return ResponseEntity.ok(dto);
     }
 

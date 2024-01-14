@@ -20,7 +20,7 @@ public class TouristAttractionsMariaDB {
     @Schema(description = "관광지 id")
     @Id
     @JsonProperty("id")
-    private String id;
+    private String touristAttractionsId;
     /**관광지명*/
     @Schema(description = "관광지명")
     @Column(nullable = false)
@@ -69,7 +69,7 @@ public class TouristAttractionsMariaDB {
 
     @Builder
     public TouristAttractionsMariaDB(
-        String id,
+        String touristAttractionsId,
         String tourDestNm,
         String operationRuleNm,
         String addrRoad,
@@ -82,7 +82,7 @@ public class TouristAttractionsMariaDB {
         String mngAgcTel,
         String mngAgcNm
     ) {
-        this.id = id;
+        this.touristAttractionsId = touristAttractionsId;
         this.tourDestNm = tourDestNm;
         this.operationRuleNm = operationRuleNm;
         this.addrRoad = addrRoad;
