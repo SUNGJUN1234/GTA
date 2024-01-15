@@ -42,8 +42,15 @@
   src="https://github.com/SUNGJUN1234/GTA/assets/91239439/b2d9b017-2893-45d9-8980-e85bec1be71d"
   >
 <h2>ERD</h2>
+<h3>MariaDB</h3>
 <img
   width="671"
-  alt="image"
+  alt="mariaDB"
   src="https://github.com/SUNGJUN1234/GTA/assets/91239439/b5d4e72b-fa69-4f73-9e4c-1b49697d84c2"
   >
+<h3>Redis</h3>
+<img
+  width="671"
+  alt="Redis"
+  src="https://github.com/SUNGJUN1234/GTA/assets/91239439/6e47e360-98f4-40e5-95c8-0ca45d098e21"
+>
