@@ -158,7 +158,7 @@ export default function App() {
       <Tab.Screen name="LoginScreen" component={LoginScreen}  options={{ tabBarButton: () => null ,headerShown:false }}></Tab.Screen>
       <Tab.Screen name="HomeScreen" component={HomeScreen} />
       <Tab.Screen name="MapScreen" component={MapScreen} />
-      <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Tab.Screen name="ProfileScreen" component={ProfileScreen} options={{unmountOnBlur: true,}} />
     </Tab.Navigator>
 
   );

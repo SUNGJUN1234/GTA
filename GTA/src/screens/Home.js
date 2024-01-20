@@ -18,7 +18,7 @@ const Home = () => {
 
   // 현재 관광지 데이너
    const [bannerData, setBannerData] = useState([
-    require('../../assets/no_img.png') ,
+    {url : "http://blogfiles.naver.net/MjAyMzEwMjJfMzMg/MDAxNjk3OTY5MzA4MDM2.7YjZYSQH1CkNouoBSUbr7BxF4LbgaI6GHOlPWM5cUK0g.VUqYdMVBovYx5c9AkIgahj5Mzp52NZFqSAe6mZwuc70g.JPEG.jinohng/518%B9%A6%BF%AA_%283%29.jpg#525x700" },
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const swiperRef = useRef(null);
@@ -35,11 +35,13 @@ const Home = () => {
       setNearDataArr(nearResponse.data);
 
       const mainImages = nearResponse.data[0]['touristAttractionsResponseRedisDto'].images;
+
       if(mainImages){
         let mainImageArr = [];
         mainImages.map((item) => {
           mainImageArr.push({url : item});
         })
+        console.log(mainImageArr);
         setBannerData(mainImageArr);
       }
 
@@ -53,22 +55,24 @@ const Home = () => {
   useEffect(() => {
     if(position.lat !== 0){
       loadHome();
+    }else {
+
     }
   }, [position])
 
-  useEffect(() => {
-    if (bannerData.length > 0) {
-      const timer = setInterval(() => {
-        swiperRef.current.scrollBy(1);
-      }, 3000);
+  // useEffect(() => {
+  //   if (bannerData.length > 0) {
+  //     const timer = setInterval(() => {
+  //       swiperRef.current.scrollBy(0);
+  //     }, 3000);
 
-      return () => clearInterval(timer);
-    }
-  }, [currentIndex, bannerData]);
+  //     return () => clearInterval(timer);
+  //   }
+  // }, [currentIndex, bannerData]);
 
 
   if(loading) {
-    return;
+    return <View></View>;
   }
 
   return (
