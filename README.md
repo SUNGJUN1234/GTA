@@ -39,7 +39,7 @@
   width="100%"
   height="100%"
   alt="architecture"
-  src="https://github.com/SUNGJUN1234/GTA/assets/91239439/b2d9b017-2893-45d9-8980-e85bec1be71d"
+  src="https://github.com/SUNGJUN1234/GTA/assets/91239439/5aed1597-9601-45fe-847b-0682e777f615"
   >
 <h2>ERD</h2>
 <h3>MariaDB</h3>
