@@ -6,6 +6,7 @@ import {
   getProfile as getKakaoProfile,
   shippingAddresses as getKakaoShippingAddresses,
   unlink,
+  loginWithKakaoAccount,
 } from "@react-native-seoul/kakao-login";
 import { awsServer } from "../server";
 import axios from "axios";
@@ -18,12 +19,13 @@ const LoginHub = ({navigation, route}) => {
 
   const signInWithKakao = async () => {
     try {
-      const token = await login();
+      const token = await loginWithKakaoAccount();
       setResult(JSON.stringify(token));
   
       const kakaoAccessToken = JSON.stringify(token.accessToken);
+      
       const loginResponse = await axios.get(awsServer.url + `/oauth2/kakao?access_token=${kakaoAccessToken}`);
-  
+
       const requestHeader = loginResponse.request.responseHeaders;
   
       const refreshToken = requestHeader['Set-Cookie'];
@@ -39,6 +41,7 @@ const LoginHub = ({navigation, route}) => {
   
       navigation.navigate('HomeScreen');
     } catch (err) {
+      alert(err);
       console.error("login err", err);
     }
   };
