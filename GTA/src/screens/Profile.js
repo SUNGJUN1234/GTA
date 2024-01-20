@@ -178,7 +178,7 @@ const Profile = () => {
                 key={idx}
               >
                 <View style={styles.stampView}>
-                  <Text>No. {item.id}</Text>
+                  <Text>No. {item.touristAttractionsId}</Text>
                   <Text style={styles.stampName}>{item.name}</Text>
                 </View>
               </ImageBackground>

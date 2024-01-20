@@ -26,7 +26,7 @@ const NearCard = ({data}) => {
         </View>
         <View style={styles.detailView}>
           <Text style={styles.nameText}>{dtoData.tourDestNm}</Text>
-          <Text>거리 : {data['distance'].value * 1000}m</Text>
+          <Text>거리 : { Math.floor(data['distance'].value * 1000)}m</Text>
           <Text>시설 : {dtoData.publicConvFcltInfo}</Text>
           <Text>주소 : {dtoData.addrJibun? dtoData.addrJibun:dtoData.addrRoad}</Text>
         </View>
