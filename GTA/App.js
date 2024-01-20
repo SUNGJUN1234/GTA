@@ -47,11 +47,20 @@ export default function App() {
     }
   };
 
+  let watchId = null; // 위치 감시 ID를 저장할 변수
+
   const fetchLocation = async () => {
     const hasLocationPermission = await requestLocationPermission();
-
+  
     if (hasLocationPermission) {
-      Geolocation.watchPosition(
+      // 이미 위치 감시가 활성화되어 있다면 중복 실행을 방지
+      if (watchId !== null) {
+        console.log('위치 감시가 이미 활성화되어 있습니다.');
+        return;
+      }
+  
+      // Geolocation.watchPosition 호출하여 watchId 저장
+      watchId = Geolocation.watchPosition(
         position => {
           const { latitude, longitude } = position.coords;
           setPosition({ lat: latitude, lng: longitude });
@@ -59,10 +68,23 @@ export default function App() {
         error => {
           console.error('위치 업데이트 중 오류 발생:', error);
         },
-        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        {
+          enableHighAccuracy: true, // 높은 정확도 요구
+          timeout: 20000, // 20초 타임아웃
+          maximumAge: 60000 // 60초 이내의 위치 정보 재사용
+        }
       );
     }
   };
+  
+  const stopWatchingLocation = () => {
+    if (watchId !== null) {
+      Geolocation.clearWatch(watchId); // 위치 감시 종료
+      watchId = null;
+      console.log('위치 감시가 중지되었습니다.');
+    }
+  };
+  
   useEffect(() => {
     const initializeApp = async () => {
       try {
