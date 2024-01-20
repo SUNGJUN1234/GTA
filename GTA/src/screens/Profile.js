@@ -58,7 +58,7 @@ const Profile = () => {
   useEffect(()=> {
       loadProfile();
 
-  },[])
+  },[userInfo])
 
 
 

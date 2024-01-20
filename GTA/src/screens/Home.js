@@ -18,7 +18,7 @@ const Home = () => {
 
   // 현재 관광지 데이너
    const [bannerData, setBannerData] = useState([
-    { url: require('../../assets/no_img.png') },
+    require('../../assets/no_img.png') ,
   ]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const swiperRef = useRef(null);
@@ -88,7 +88,7 @@ const Home = () => {
         >
           {bannerData.map((item, index) => (
             <View style={styles.slide} key={index}>
-              <Image source={item.url} style={styles.bannerImg} />
+              <Image source={{uri : item.url}} style={styles.bannerImg} />
             </View>
           ))}
         </Swiper>
