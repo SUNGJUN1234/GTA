@@ -19,7 +19,7 @@ const NearCard = ({data}) => {
           ></Image>
           :
           <Image
-          source={{uri: require('../../assets/no_img.png')}}
+          source={require('../../assets/no_img.png')}
           style={styles.cardImg}
           ></Image>
           }
