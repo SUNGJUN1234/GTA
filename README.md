@@ -6,32 +6,32 @@
 <p>기간: 2023-10 ~ 2023-01</p>
 <h2>실사용 화면</h2>
 <img
-  width="33%"
+  width="30%"
   alt="usedScreen"
   src="https://github.com/SUNGJUN1234/GTA/assets/112474820/7a2215c0-c525-41a3-a8d0-275d895a643c"
   >
   <img
-  width="33%"
+  width="30%"
   alt="usedScreen"
   src="https://github.com/SUNGJUN1234/GTA/assets/112474820/45ef4216-d527-4945-b45a-ff84f6de1a4a"
   >
 <img
-  width="33%"
+  width="30%"
   alt="usedScreen"
   src="https://github.com/SUNGJUN1234/GTA/assets/112474820/3ff67419-62df-4e45-8abd-b883b6edcc07"
   >
   <img
-  width="33%"
+  width="30%"
   alt="usedScreen"
   src="https://github.com/SUNGJUN1234/GTA/assets/112474820/e8d8312d-9f96-4ca0-9397-c98d3468d6cb"
   >
   <img
-  width="33%"
+  width="30%"
   alt="usedScreen"
   src="https://github.com/SUNGJUN1234/GTA/assets/112474820/e499f4de-a899-430e-9857-c40c0326ce4a"
   >
 <img
-  width="33%"
+  width="30%"
   alt="usedScreen"
   src="https://github.com/SUNGJUN1234/GTA/assets/112474820/daa5c0be-38e8-4f4b-983b-985a89f83bd1"
   >
